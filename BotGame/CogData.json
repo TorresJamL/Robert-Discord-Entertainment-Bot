@@ -1,0 +1,48 @@
+{
+    "enemies" : [
+        {
+            "type": "Grunt",
+            "name": "Puss Seal Ess",
+            "description": "A fat seal with an eye patch approaches..."
+        },
+        {
+            "type": "Figther",
+            "name": "Rahstran Ing Order",
+            "description": "Something approaches... maintaining a law ordered distance from you."
+        },
+        {
+            "type": "Boss",
+            "name": "Gabriel",
+            "description": "Judgement"
+        },
+        {
+            "type": "Enemy",
+            "name": "Goon",
+            "hp": 200,
+            "damage": 20,
+            "defense": 5,
+            "speed": 5,
+            "description": "Uh oh..."
+        }
+    ],
+    "items" : [
+        {
+            "type": "Weapon",
+            "name": "Long Sword",
+            "durability": 5,
+            "damage": 5
+        },
+        {
+            "type": "Potion",
+            "name": "Regeneration",
+            "effect": "Regen",
+            "durability": 2
+        },
+        {
+            "type": "Armor",
+            "name": "Rat Armor",
+            "defense": 1,
+            "durability": 2
+        }
+    ]
+}
