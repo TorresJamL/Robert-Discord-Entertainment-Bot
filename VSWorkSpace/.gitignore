@@ -1,1 +1,8 @@
+# Stores my disc token and other file paths
 tokenStorage.py
+
+# Blacklisted people on a server are stored here
+blacklist.txt
+
+# Message history of the server
+message_history.txt
