@@ -8,9 +8,10 @@ tracemalloc.start()
 
 import random
 import pyttsx3
-from tokenStorage import token, JAMIL_ID, FILE_PATH
-from music_cog import MusicCog
+from tokenStorage import *
+from music_cog import *
 from text_to_speech_cog import *
+from moderation_cog import *
 import time
 import sys
 sys.path.insert(0, FILE_PATH) 
@@ -19,7 +20,17 @@ from BotGame import gameCog
 
 intents = discord.Intents.all()
 client = commands.Bot(command_prefix='-', intents=intents)
-engine = pyttsx3.init()
+
+# TODO: 
+#   Replace every instance of "JAMIL_ID" with a new role specifically for who's managing the bot.
+#   Make a function that assigns the new 'bot manager' role to any ONE, person. Allow only 
+#   people with administration permissions to use said command.
+#   Remove certain inside jokes
+#   Move some functions to a new cog, "funCog."
+#   
+#   Some functions use other functions that would make sense to leave in this file.
+#   Decide on what to do with those.
+#   In some cases, it's faster to re-implement a new function with the same purpose in each cog rather than import it from this one.
 
 async def join(ctx):
     if (ctx.author.voice):
@@ -60,86 +71,6 @@ async def send_submission(ctx, inputs_length, text: str)->None:
         client.submissions[owner_dm.id] = (user, text)
     else:
         await ctx.send("```Your submission does not fit the submission format. The format for enemy submission is : \nEnemy addition format -->| Enemy Type | name | hp | dmg | def | speed |```")          
-'''   
-async def text_to_speech(rate, volume, speakGender, text):
-    engine.setProperty('rate', rate) #changes the rate of the voice
-    engine.setProperty('volume', volume)
-    voices = engine.getProperty('voices')
-    engine.setProperty('voice', voices[speakGender].id)
-    
-    # Use pyttsx3 to convert text to speech
-    engine.save_to_file(text, "tts_output.wav")
-    engine.runAndWait()
-'''
-# Command to make the bot join a voice channel and say something
-'''@client.command()
-async def speak(ctx, voice_rate: int = 200, voice_volume: float = 1.0, voice_gender: int = 0, *, text: str):
-    # Get the voice channel the user wants the bot to join
-    if (ctx.author.voice):
-        channel = ctx.message.author.voice.channel
-    else:
-        await ctx.send('goofy')
-
-    if not channel:
-        await ctx.send("Voice channel not found.")
-        return
-
-    # Join the voice channel
-    voice_client = await channel.connect()
-
-    # Play the user's text in the voice channel
-    await text_to_speech(voice_rate, voice_volume, voice_gender, text)
-
-    # Get the bot's voice state
-    voice_state = ctx.guild.voice_client
-
-    if voice_state:
-        # Play the generated speech in the voice channel
-        voice_state.play(discord.FFmpegPCMAudio("tts_output.wav"))
-
-    # Wait until the audio is finished playing
-    while voice_client.is_playing():
-        await asyncio.sleep(1)
-
-    # Disconnect from the voice channel
-    await voice_client.disconnect()
-'''
-'''
-@client.command(name = "Dspeak")
-async def speak_base(ctx, *, text):
-    # Get the voice channel the user wants the bot to join
-    print(type(text))
-    print(text)
-
-    if (ctx.author.voice):
-        channel = ctx.message.author.voice.channel
-    else:
-        await ctx.send('goofy')
-
-    if not channel:
-        await ctx.send("Voice channel not found.")
-        return
-
-    # Join the voice channel
-    voice_client = await channel.connect()
-
-    # Play the user's text in the voice channel
-    await text_to_speech(150, 1.0, 0, text)
-
-    # Get the bot's voice state
-    voice_state = ctx.guild.voice_client
-
-    if voice_state:
-        # Play the generated speech in the voice channel
-        voice_state.play(discord.FFmpegPCMAudio("tts_output.wav"))
-
-    # Wait until the audio is finished playing
-    while voice_client.is_playing():
-        await asyncio.sleep(1)
-
-    # Disconnect from the voice channel)
-    await voice_client.disconnect()
-'''
 
 @client.command(name = "VC?")
 async def VC(ctx)->None:
@@ -155,22 +86,6 @@ async def ping_user(ctx, user, amount: int, *, message: str = "")->None:
             await ctx.send(f"{user}. New message from: {ctx.author} \n{message}")
     except Exception as error:
         await ctx.send(f"An error has occured: {error}")
-
-@client.command()
-async def personalWorth(ctx):
-    num = random.randint(1, 4)
-    if num == 1:
-        num = random.randint(1, 10_000)
-        await ctx.send(f"{format(num, ',')}! You gonna stay on my dick until you die! You serve no purpose in life. Your purpose in life is being on my stream sucking on my dick daily! Your purpose is being in that chat blowing that dick daily! Your life is nothing! You serve zero purpose! You should kill yourself now! And give somebody else a piece of that oxygen and ozone layer, that's covered up so we can breathe inside this blue trapped bubble. Because what are you here for? To worship me? Kill yourself. I mean that, with a hundred percent. With a thousand percent.")
-    elif num == 2:
-        num = random.randint(10_000, 100_000)
-        await ctx.send(f'{format(num, ',')}! I live in a low income housing environment that goes by the government name of "Section 8." Me and a group of my allies control certain areas of this section in order to run our illegitimate business. We possess unregistered firearms, stolen vehicles, mind-altering inhibitors and only use cash for financial purchases. If anyone would like to settle unfinished altercations, I will be more than happy to release my address. I would like to warn you; I am a very dangerous person and I regularly disobey the law."')
-    elif num == 3:   
-        num = random.randint(100_000, 100_000_000_000)
-        await ctx.send(f"{format(num, ',')}! Ah, old chap, one simply can't help but revel in the sheer brilliance of opulence! I find myself surrounded by the finest of estates, adorned with the most exquisite trinkets. From my esteemed collection of rare antiques to the chauffeur-driven Rolls-Royce awaiting my every whim, one's affluence is truly the epitome of grandeur! Cheers!")
-    else:
-        num = random.randint(-100_000_000_000, 1)
-        await ctx.send(f"{format(num, ',')}! Bloomin' 'ell, look at those toffs flaunting their wealth! Frolicking in their grand estates, sippin' champagne like it's tap water. Must be nice, eh? While the rest of us scrape by, they're livin' the high life, and I'm stuck here green with envy, cursin' their posh privileges.")
 
 @client.command()
 async def randSCP(ctx):
@@ -189,7 +104,7 @@ async def L(ctx):
         await ctx.send("You WIN!")
         os.system("shutdown /s /t 1")
     else:
-        await ctx.send(f"You should go kill yourself now! You got {randomNumber} not 1,022,387!")
+        await ctx.send(f"You got {randomNumber} not 1,022,387!")
 
 @client.command()
 async def LETSGOGAMBLING(ctx):
@@ -209,6 +124,7 @@ async def LETSGOGAMBLING(ctx):
     except discord.DiscordException as e:
         await ctx.send(f'An error occurred: {str(e)}')
 
+# Add to new funCog
 def check_string_in_file(filename, target_string):
     with open(filename, 'r') as file:
         for line in file:
@@ -216,6 +132,7 @@ def check_string_in_file(filename, target_string):
                 return True
     return False
 
+# Add to new funCog
 @client.command(name='blacklist')
 async def blacklistUser(ctx, user_ID):
     processed_user_ID = user_ID[2:-1]
@@ -230,6 +147,7 @@ async def blacklistUser(ctx, user_ID):
         await ctx.send("An error occured while parsing file. Blame Jamil's incompetence")
         print(f"An error occured: {e}")
 
+# Add to new funCog
 @client.command()
 async def unBlacklistUser(ctx, user_ID):
     processed_user_ID = user_ID[2:-1]
@@ -244,6 +162,7 @@ async def unBlacklistUser(ctx, user_ID):
     else:
         await ctx.send(f"User: {user_ID} is not on the blacklist!")
 
+# Add to new funCog
 @client.command(name = 'sacrifice')
 async def randVC(ctx):
     try:
@@ -354,6 +273,7 @@ async def get_voice_channels(ctx):
     await ctx.send(f"Occupied Voice Channels: {vc_list}")
 
 # Command toggle to periodically move me between different occupied VCs
+# Move to funCog
 @client.command(name = 'VC_gamblecore')
 async def VC_gamblecore(ctx):
     try:
@@ -362,8 +282,9 @@ async def VC_gamblecore(ctx):
     except Exception as e:
         print(f"Error occured: {e}")
     finally:
-        await ctx.send("```Unfortunatly, an error occured. If you'd like to report this error, do not, as Jamil does not care about the bug and especially not you.```")
+        await ctx.send("```Unfortunatly, an error occured. If you'd like to report this error, do not, as   does not care about the bug and especially not you.```")
 
+# Undecided
 async def toggle_vc_move(ctx):
     try:
         if vc_move.is_running():
@@ -374,6 +295,7 @@ async def toggle_vc_move(ctx):
         print(f"Error occured: {e}")
 
 # Move me every 'seconds' seconds
+# Move to funCog
 @tasks.loop(seconds = 1.0)
 async def vc_move():
     # Bot commands channel
@@ -397,19 +319,21 @@ async def vc_move():
         await toggle_vc_move()
 
 # Wait till start up
+# Move to funCog
 @vc_move.before_loop
 async def before_vc_move():
     await client.wait_until_ready()
 
-# Create an instance of the gameCog
+# Create instances of the game cog, tts cog, and moderation cog
 game_cog = gameCog.Game(client)
 tts_cog = TextToSpeech(client)
-music_cog = MusicCog(client)
+mod_cog = ModerationCog(client)
 
 # Run the bot
 async def main():
     await client.add_cog(game_cog)
     await client.add_cog(tts_cog)
+    await client.add_cog(mod_cog)
     await client.start(token)
 
 asyncio.run(main())
