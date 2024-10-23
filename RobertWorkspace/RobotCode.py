@@ -8,10 +8,13 @@ tracemalloc.start()
 
 import random
 import pyttsx3
+# Cog imports 
 from tokenStorage import *
 from music_cog import *
 from text_to_speech_cog import *
 from moderation_cog import *
+from fun_cog import *
+
 import time
 import sys
 sys.path.insert(0, FILE_PATH) 
@@ -77,15 +80,8 @@ async def VC(ctx)->None:
     """
     Makes the bot join the VC the user is in.
     """
+    print(type(ctx))
     await join(ctx)
-
-@client.command(name = "ping")
-async def ping_user(ctx, user, amount: int, *, message: str = "")->None:
-    try:
-        for _ in range(amount):
-            await ctx.send(f"{user}. New message from: {ctx.author} \n{message}")
-    except Exception as error:
-        await ctx.send(f"An error has occured: {error}")
 
 @client.command()
 async def randSCP(ctx):
@@ -328,12 +324,14 @@ async def before_vc_move():
 game_cog = gameCog.Game(client)
 tts_cog = TextToSpeech(client)
 mod_cog = ModerationCog(client)
+fun_cog = FunCog(client)
 
 # Run the bot
 async def main():
     await client.add_cog(game_cog)
     await client.add_cog(tts_cog)
     await client.add_cog(mod_cog)
+    await client.add_cog(fun_cog)
     await client.start(token)
 
 asyncio.run(main())

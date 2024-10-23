@@ -4,8 +4,6 @@ from discord.ext import commands, tasks
 import asyncio
 import tracemalloc
 
-import RobotCode
-
 tracemalloc.start()
 
 class TextToSpeech(commands.Cog):
