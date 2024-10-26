@@ -39,3 +39,4 @@ class ModerationCog(commands.Cog):
         finally:
             await ctx.send(f"Something went wrong. User: {user} : may not exist.")
 
+
