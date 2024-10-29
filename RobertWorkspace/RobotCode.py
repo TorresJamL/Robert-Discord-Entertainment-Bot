@@ -93,33 +93,6 @@ async def randSCP(ctx):
         scpNum = num
     await ctx.send(f'https://scp-wiki.wikidot.com/scp-{scpNum}' )
 
-@client.command()
-async def L(ctx):
-    randomNumber = random.randint(1, 1_000_000_000)
-    if(randomNumber == 1_022_387):
-        await ctx.send("You WIN!")
-        os.system("shutdown /s /t 1")
-    else:
-        await ctx.send(f"You got {randomNumber} not 1,022,387!")
-
-@client.command()
-async def LETSGOGAMBLING(ctx):
-    try:
-        slots = "0|0|0|0|0|0|0|0|0|0"
-        slot_message = await ctx.send(f"```{slots}```")
-        for i in range(0, len(slots), 2):
-            slot = random.randint(0, 9)
-            slots = slots[:i] + str(slot) + slots[i+1:]
-            await asyncio.sleep(1)
-            await slot_message.edit(content = f"```{slots}```")
-        if slots == "7|7|7|7|7|7|7|7|7|7":
-            await ctx.send("LETS GO")
-            os.system("shutdown /s /t 1")
-        else:
-            await ctx.send("aw, dang it")
-    except discord.DiscordException as e:
-        await ctx.send(f'An error occurred: {str(e)}')
-
 # Add to new funCog
 def check_string_in_file(filename, target_string):
     with open(filename, 'r') as file:
@@ -209,13 +182,6 @@ async def randVC(ctx):
 @client.event
 async def on_message(message):
     await client.process_commands(message)
-
-@client.event
-async def on_ready():
-    print(f'Logged in as {client.user}')
-    client.submissions = {}  # Initialize a dictionary to store submissions
-    if (vc_move.is_running):
-        vc_move.stop()
 
 @client.command(name='request')
 async def add_to_game(ctx, args, *, text: str):
@@ -319,6 +285,14 @@ async def vc_move():
 @vc_move.before_loop
 async def before_vc_move():
     await client.wait_until_ready()
+
+@client.event
+async def on_ready():
+    print(f'Logged in as {client.user}')
+    # Initialize a dictionary to store submissions
+    client.submissions = {}  
+    if (vc_move.is_running):
+        vc_move.stop()
 
 # Create instances of the game cog, tts cog, and moderation cog
 game_cog = gameCog.Game(client)

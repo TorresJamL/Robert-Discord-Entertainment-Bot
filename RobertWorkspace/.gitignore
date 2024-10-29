@@ -6,3 +6,6 @@ blacklist.txt
 
 # Message history of the server
 message_history.txt
+
+# Watch file for automatic restarting
+WatchBot.py

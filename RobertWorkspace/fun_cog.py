@@ -3,6 +3,7 @@ from discord.ext import * #commands, tasks
 import os
 import asyncio
 
+import traceback
 import tracemalloc
 tracemalloc.start()
 
@@ -43,6 +44,7 @@ def time_elasped(func):
             time_end = time.time()
         except Exception as error:
             print(f"An error occured (find_elapsed_time) : \n{error}")
+            traceback.print_exc()
             raise error
         finally:
             print("ended")
@@ -79,3 +81,30 @@ class FunCog(commands.Cog):
             
         except Exception as error:
             await ctx.send(f"An error has occured (ping_user) : {error}")
+
+    @commands.command()
+    async def L(self, ctx: Context):
+        randomNumber = random.randint(1, 1_000_000_000)
+        if(randomNumber == 1_022_387):
+            await ctx.send("You WIN!")
+            os.system("shutdown /s /t 1")
+        else:
+            await ctx.send(f"You got {randomNumber} not 1,022,387!")
+
+    @commands.command()
+    async def LETSGOGAMBLING(self, ctx: Context):
+        try:
+            slots = "0|0|0|0|0|0|0|0|0|0"
+            slot_message = await ctx.send(f"```{slots}```")
+            for i in range(0, len(slots), 2):
+                slot = random.randint(0, 9)
+                slots = slots[:i] + str(slot) + slots[i+1:]
+                await asyncio.sleep(1)
+                await slot_message.edit(content = f"```{slots}```")
+            if slots == "7|7|7|7|7|7|7|7|7|7":
+                await ctx.send("LETS GO")
+                os.system("shutdown /s /t 1")
+            else:
+                await ctx.send("aw, dang it")
+        except Exception as e:
+            await ctx.send(f'An error occurred: {str(e)}')

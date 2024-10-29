@@ -6,6 +6,11 @@ import tracemalloc
 
 tracemalloc.start()
 
+class Context(discord.ext.commands.context.Context):
+    def __init__(self, client) -> None:
+        self.client = client
+        super().__init__()
+
 class ModerationCog(commands.Cog):
     def __init__(self, client) -> None:
         super().__init__()
@@ -13,22 +18,26 @@ class ModerationCog(commands.Cog):
     
     @commands.command(name = "ban")
     @commands.has_guild_permissions(administrator=True)
-    async def user_ban(ctx, user: Member, days_of_messages, reason):
-        """
-        Permenantly bans user. Upon calling "ban @user", the pinged user will be kicked and prevented from joining the server ever.
+    async def user_ban(self, ctx: Context, user: Member, days_of_messages: int = 0, ban_reason: str = "") -> None:
+        """Permenantly bans user. 
 
-        :param user: Accepts a user as parameter.
+        Args:
+            ctx (Context): _description_
+            user (Member): _description_
+            days_of_messages (int, optional): _description_. Defaults to 0.
+            ban_reason (str, optional): _description_. Defaults to "".
+        Examples:
+            "ban @user": @user will be kicked and prevented from joining the server until unbanned.
         """
         try:
-            await user.ban()
+            await user.ban(delete_message_days = days_of_messages, reason = ban_reason)
         except Exception as error:
             print(f"An error has occured: {error}")
-        finally:
-            await ctx.send(f"Something went wrong. User: {user} : may not exist.")
+            await ctx.send(f'Something went wrong. User: "{user}" may not exist.')            
 
     @commands.command(name = "kick")
     @commands.has_guild_permissions(administrator=True)
-    async def user_kick(ctx, user: Member, *, reason: str):
+    async def user_kick(self, ctx: Context, user: Member, *, reason: str) -> None:
         """
         Kicks user from guild. 
         """
@@ -39,4 +48,21 @@ class ModerationCog(commands.Cog):
         finally:
             await ctx.send(f"Something went wrong. User: {user} : may not exist.")
 
+    @commands.command(name = "timeout")
+    @commands.has_guild_permissions(administrator=True)
+    async def user_timeout(self, ctx: Context,  member: Member, duration: float, reason: str) -> None:
+        pass
 
+    @commands.command(name = "toggleAutoMod")
+    @commands.has_guild_permissions(administrator=True)
+    async def toggleAutoMod(self, ctx: Context, feature: str = "all") -> None:
+        match feature:
+            case "all":
+                pass
+            case "anti-spam":
+                pass
+            case "language-filter":
+                pass
+    
+    async def antiSpam():
+        pass
