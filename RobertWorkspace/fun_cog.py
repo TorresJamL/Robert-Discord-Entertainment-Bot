@@ -18,11 +18,11 @@ import sys
 '''
 Cog to store all of the "fun" / "entertainment" commands for ROBERT
 '''
-def time_elasped(func):
-    """_summary_
+def time_elasped(func: function):
+    """Tracks the run time of function 'func'
 
     Args:
-        func (_type_): _description_
+        func (function): Async function
     """
     async def find_elasped_time(ctx, *args, **kwargs):
         """_summary_
