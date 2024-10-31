@@ -23,6 +23,10 @@ from ItemsCog import Item, Weapon, Potion, Armor
 # Items & enemies are contained within a json file (CogData.json)
 
 # Players will be able to name themselves after selection sequence
+class Context(discord.ext.commands.context.Context):
+    def __init__(self, client) -> None:
+        self.client = client
+        super().__init__()
 
 class Game(commands.Cog):
     enemy_list: Enemy = []
@@ -36,13 +40,13 @@ class Game(commands.Cog):
         self.player_list = {} # ID : user nickname
     
     @commands.command(name = "Placeholder-Text")
-    async def game_start(self, ctx):
+    async def game_start(self, ctx: Context):
         Game.is_getting_players = True
         Game.enemy_list, Game.item_list = Game.load_game_data("BotGame/CogData.json")
         await Game.prompt_for_players(self, ctx)
 
     @commands.command(name = "nickname")
-    async def change_name(self, ctx, *, new_name: str):
+    async def change_name(self, ctx: Context, *, new_name: str):
         try:
             if Game.is_getting_players:
                 user_id = ctx.author.id
@@ -71,7 +75,7 @@ class Game(commands.Cog):
         else:
             return "GameCog Error: Enemy not found"
     
-    async def prompt_for_players(self, ctx):
+    async def prompt_for_players(self, ctx: Context):
         Game.prompt_message = await ctx.send("```React with ✅ if you wish to be a player. Once everyone who wants to play has reacted, react with #️⃣ to end player selection sequence.```")
         await Game.prompt_message.add_reaction('✅')
         await Game.prompt_message.add_reaction('#️⃣')

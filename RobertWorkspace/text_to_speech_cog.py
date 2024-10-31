@@ -58,7 +58,7 @@ class TextToSpeech(commands.Cog):
         engine.save_to_file(text, "RobertWorkspace\\tts_output.wav")
         engine.runAndWait()
     
-    async def speak(self, ctx: Context, voice_client: VoiceClient, text: str = "", voice_rate: int = 200, voice_volume: float = 1.0, voice_gender: bool = None):
+    async def speak(self, ctx: Context, voice_client: VoiceClient, text: str = "", voice_rate: int = 200, voice_volume: float = 1.0, voice_gender: bool = None) -> None:
         """Plays the text as audio in a voice channel
 
         Args:
@@ -72,12 +72,15 @@ class TextToSpeech(commands.Cog):
         try:
             if self.TTS_queue == []:
                 await voice_client.disconnect()
+                return
             else:
                 # Generate the audio
                 await self.text_to_speech(voice_rate, voice_volume, voice_gender, text)
                 # Get the bot's voice state and play the generated audio in the voice channel
                 voice_state = ctx.guild.voice_client
                 if voice_state:
+                    with open("RobertWorkspace\\tts_output.wav", "rb") as file:
+                        await ctx.send("Here's your audio file!", file=discord.File(file, "robert TTS.wav"))
                     voice_state.play(discord.FFmpegPCMAudio("RobertWorkspace\\tts_output.wav"))
                 while voice_client.is_playing():
                     await asyncio.sleep(1)

@@ -18,40 +18,26 @@ import sys
 '''
 Cog to store all of the "fun" / "entertainment" commands for ROBERT
 '''
-def time_elasped(func: function):
-    """Tracks the run time of function 'func'
-
-    Args:
-        func (function): Async function
-    """
-    async def find_elasped_time(ctx, *args, **kwargs):
-        """_summary_
-
-        Args:
-            ctx (_type_): _description_
-
-        Raises:
-            error: _description_
-
-        Returns:
-            _type_: _description_
-        """
-        print("started")
-        print(f"Arguments:{ctx}, {args}, {kwargs}")
+def time_elapsed(func):
+    """Tracks the runtime of function 'func'."""
+    async def find_elapsed_time(self, ctx, *args, **kwargs):
+        print("Started")
+        print(f"Arguments: {self}, {ctx}, {args}, {kwargs}")
         try:
             time_start = time.time()
-            result = await func(*args, **kwargs)
+            result = await func(ctx, *args, **kwargs)
             time_end = time.time()
         except Exception as error:
-            print(f"An error occured (find_elapsed_time) : \n{error}")
+            print(f"An error occurred (find_elapsed_time): {error}")
             traceback.print_exc()
+            await ctx.send(f"An error has occurred: {error}")
             raise error
         finally:
-            print("ended")
-        elasped_time = time_end - time_start
-        print(f"Elapsed time for {func.__name__}: {elasped_time: .6f} seconds")
+            print("Ended")
+        elapsed_time = time_end - time_start
+        print(f"Elapsed time for {func.__name__}: {elapsed_time:.6f} seconds")
         return result
-    return find_elasped_time
+    return find_elapsed_time
 
 class Context(discord.ext.commands.context.Context):
     def __init__(self, client) -> None:
@@ -64,7 +50,7 @@ class FunCog(commands.Cog):
         super().__init__()
 
     @commands.command(name = "ping")
-    @time_elasped
+    #@time_elapsed
     async def ping_user(self, ctx: Context, user: Member, amount: int = 1, *, message: str = "")->None:
         """Pings a user a certain amount of times with a custom message.
 
@@ -74,6 +60,7 @@ class FunCog(commands.Cog):
             amount (int): amount of times the user will be pinged with the message
             message (str, optional): Message to be sent by the bot. Defaults to "".
         """
+        print(f"Function: ")
         try:
             for _ in range(amount):
                 await ctx.send(f"<@{user.id}>")

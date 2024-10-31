@@ -4,8 +4,6 @@ import random
 from discord.ext import commands
 from enum import Enum
 
-from PlayerCog import Player
-
 class Enemy:
     def __init__(self, name: str, hp: float, damage: float, defense: float, speed: float, description: str = "An enemy...") -> None:
         self.name = name
