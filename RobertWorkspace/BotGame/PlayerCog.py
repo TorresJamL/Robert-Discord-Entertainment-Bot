@@ -6,8 +6,7 @@ from ItemsCog import Item
 from discord.ext import commands
 
 class Player:
-    def __init__(self, name, role) -> None:
-        self.role = role
+    def __init__(self, name) -> None:
         self.name = name
         self.damage = 1
         self.defense = 1
@@ -18,6 +17,7 @@ class Player:
         self.is_alive = True
         self.equiped_slots = []
         self.inventory = []
+        # TODO: Initialize values within constructor parameters.
 
     def is_player_alive(self):
         return self.is_alive
@@ -57,3 +57,28 @@ class Player:
             if should_delete:
                 self.remove_from_inv(item)
                 del item  # This ensures the item is properly deleted
+
+#TODO: Make the Vanguard, Warrior, Harbinger, and Liferbinder classes. Give them character descriptions.
+#* Lifebinder: Includes a team heal and individual heal ability. Possibly passive regeneration. 
+#* Warrior: Includes battle buffs.
+#* Harbinger: Includes abilities like foresight (sees the probability of an encounter).
+#* Vanguard: Includes higher natural health/armor, armor is more effective (In return weapons are less effective), and they can taunt the 
+#* enemy to make them target themselves.
+#! All abilities need a cooldown (Likely implemented in GameCog)
+
+#? Dunce class that is almost always useless but can land a super heavy hit 1 / 1000 times.
+class Clerk(Player):
+    def __init__(self, name):
+        super().__init__(name)
+
+class Warrior(Player):
+    def __init__(self, name):
+        super().__init__(name)
+
+class Harbinger(Player):
+    def __init__(self, name):
+        super().__init__(name)
+
+class LifeBinder(Player):
+    def __init__(self, name):
+        super().__init__(name)

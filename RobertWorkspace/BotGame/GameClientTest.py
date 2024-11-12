@@ -23,7 +23,7 @@ tracemalloc.start()
 def print_line(string):
     print(string)
     print()
-'''
+
 player1 = Player("Jamil", "Clerk")
 enemy1 = Grunt("grunt", None)
 
@@ -33,4 +33,3 @@ print_line(enemy1.get_enemy_stats())
 player1.deal_damage(enemy1)
 
 print_line(enemy1.get_enemy_stats())
-'''
