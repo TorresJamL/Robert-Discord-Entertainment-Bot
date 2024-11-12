@@ -9,3 +9,7 @@ message_history.txt
 
 # Watch file for automatic restarting
 WatchBot.py
+
+# Extras
+extras.py
+music_cog.py

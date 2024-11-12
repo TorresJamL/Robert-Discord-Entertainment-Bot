@@ -295,12 +295,16 @@ tts_cog = TextToSpeech(client)
 mod_cog = ModerationCog(client)
 fun_cog = FunCog(client)
 
+
+mc = MusicCog(client)
 # Run the bot
 async def main():
     await client.add_cog(game_cog)
     await client.add_cog(tts_cog)
     await client.add_cog(mod_cog)
     await client.add_cog(fun_cog)    
+    await client.add_cog(mc) 
     await client.start(token)
 
-asyncio.run(main())
+if __name__ == "__main__":
+    asyncio.run(main())

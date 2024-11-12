@@ -111,6 +111,7 @@ class Game(commands.Cog):
         enemies = []
         items = []
 
+
         with open(data_file, 'r') as file:
             data = json.load(file)
 
