@@ -5,6 +5,8 @@ from discord.ext import commands
 from enum import Enum
 
 class Enemy:
+    """Enemy class
+    """
     def __init__(self, name: str, hp: float, damage: float, defense: float, speed: float, description: str = "An enemy...") -> None:
         self.name = name
         self.health_points = hp

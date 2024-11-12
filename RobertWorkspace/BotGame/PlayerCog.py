@@ -2,12 +2,22 @@ import asyncio
 import discord
 import random
 
-from ItemsCog import Item
+from ItemsCog import *
+from EnemyCog import *
+from InventoryCog import Inventory
 from discord.ext import commands
 
 class Player:
-    def __init__(self, name: str, discription: str) -> None:
+    def __init__(self, name: str, 
+                 description: str,
+                 damage: int = 1,
+                 defense: int = 1,
+                 speed: int = 2,
+                 weapon: Weapon = None, 
+                 armor: Armor = None
+                 ) -> None:
         self.name = name
+        self.description = description
         self.damage = 1
         self.defense = 1
         self.speed = 2
@@ -15,8 +25,7 @@ class Player:
         self.weapon = None
         self.armor = None
         self.is_alive = True
-        self.equiped_slots = []
-        self.inventory = []
+        self.inventory = Inventory(size= 10)
         # TODO: Initialize values within constructor parameters.
 
     def is_player_alive(self):
@@ -36,7 +45,7 @@ class Player:
                 self.health_points -= damage_dealt
             print(f"Enemy strikes for: {damage_dealt} damage!")
 
-    def deal_damage(self, enemy):
+    def deal_damage(self, enemy: Enemy):
         enemy.take_damage(self.damage)
 
     def add_to_inv(self, item):
@@ -45,20 +54,20 @@ class Player:
         else:
             return "Inventory is full"
         
-    def remove_from_inv(self, item):
-        if len(self.inventory) > 0:
-            self.inventory.remove(item)
-        else:
-            return "Inventory is empty"
+    # def remove_from_inv(self, item):
+    #     if len(self.inventory) > 0:
+    #         self.inventory.remove(item)
+    #     else:
+    #         return "Inventory is empty"
         
-    def use_item(self, item: Item):
-        if item in self.inventory:
-            should_delete = item.lose_durability()
-            if should_delete:
-                self.remove_from_inv(item)
-                del item  # This ensures the item is properly deleted
-        else:
-            return f"Item: {item}, could not be found."
+    # def use_item(self, item: Item):
+    #     if item in self.inventory:
+    #         should_delete = item.lose_durability()
+    #         if should_delete:
+    #             self.remove_from_inv(item)
+    #             del item  # This ensures the item is properly deleted
+    #     else:
+    #         return f"Item: {item}, could not be found."
 
 #TODO: Make the Vanguard, Warrior, Harbinger, and Liferbinder classes. Give them character descriptions.
 #* Lifebinder: Includes a team heal and individual heal ability. Possibly passive regeneration. 
@@ -70,17 +79,17 @@ class Player:
 
 #? Dunce class that is almost always useless but can land a super heavy hit 1 / 1000 times.
 class Vanguard(Player):
-    def __init__(self, name):
-        super().__init__(name, "Protector of the people. All of which are himself")
+    def __init__(self, _name):
+        super().__init__(name= _name, description= "place-holder-text")
 
 class Warrior(Player):
-    def __init__(self, name, role_description):
-        super().__init__(name, role_description)
+    def __init__(self, _name):
+        super().__init__(name= _name, description= "place-holder-text")
 
 class Harbinger(Player):
-    def __init__(self, name, role_description):
-        super().__init__(name, role_description)
+    def __init__(self, _name):
+        super().__init__(name= _name, description= "place-holder-text")
 
 class LifeBinder(Player):
-    def __init__(self, name, role_description):
-        super().__init__(name, role_description)
+    def __init__(self, _name):
+        super().__init__(name= _name, description= "place-holder-text")
