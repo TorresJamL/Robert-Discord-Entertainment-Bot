@@ -6,7 +6,7 @@ from ItemsCog import Item
 from discord.ext import commands
 
 class Player:
-    def __init__(self, name) -> None:
+    def __init__(self, name: str, discription: str) -> None:
         self.name = name
         self.damage = 1
         self.defense = 1
@@ -57,6 +57,8 @@ class Player:
             if should_delete:
                 self.remove_from_inv(item)
                 del item  # This ensures the item is properly deleted
+        else:
+            return f"Item: {item}, could not be found."
 
 #TODO: Make the Vanguard, Warrior, Harbinger, and Liferbinder classes. Give them character descriptions.
 #* Lifebinder: Includes a team heal and individual heal ability. Possibly passive regeneration. 
@@ -67,18 +69,18 @@ class Player:
 #! All abilities need a cooldown (Likely implemented in GameCog)
 
 #? Dunce class that is almost always useless but can land a super heavy hit 1 / 1000 times.
-class Clerk(Player):
+class Vanguard(Player):
     def __init__(self, name):
-        super().__init__(name)
+        super().__init__(name, "Protector of the people. All of which are himself")
 
 class Warrior(Player):
-    def __init__(self, name):
-        super().__init__(name)
+    def __init__(self, name, role_description):
+        super().__init__(name, role_description)
 
 class Harbinger(Player):
-    def __init__(self, name):
-        super().__init__(name)
+    def __init__(self, name, role_description):
+        super().__init__(name, role_description)
 
 class LifeBinder(Player):
-    def __init__(self, name):
-        super().__init__(name)
+    def __init__(self, name, role_description):
+        super().__init__(name, role_description)
