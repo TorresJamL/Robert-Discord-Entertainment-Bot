@@ -30,6 +30,6 @@ item = Item(name= "Cup", durability= 5)
 box = Inventory(10)
 
 
-while box.percent_used() < 100:
-    print(box.percent_used())
-    box.add_item(item= item)
+while item.has_durability():
+    print(item)
+    item.lose_durability()

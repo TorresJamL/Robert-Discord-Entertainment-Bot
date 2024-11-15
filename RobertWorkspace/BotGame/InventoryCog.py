@@ -58,12 +58,17 @@ class Inventory():
 
     def use_item(self, item: Item):
         if item in self.inventory:
-            item = item
+            item = item # re-define 'item' from the parameter so VSC recognizes it's type.
             should_delete = item.lose_durability()
             if should_delete:
                 self.remove_item(item)
+                return ""
+            return str(item)
         else:
             return f"Item: {item}, could not be found."
 
     def get_items(self, filterType):
         return list(filter(lambda x: type(x) == filterType, self.inventory))
+    
+    def has_item(self, item: Item):
+        return True if item in self.inventory else False

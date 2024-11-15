@@ -10,7 +10,20 @@ class Item:
         self.durability = durability
         self.state = "Working"
 
+    def has_durability(self):
+        """Checks if the item has durability
+
+        Returns:
+            bool: True if it has durability, False if not.
+        """
+        return True if self.durability > 0 else False
+
     def lose_durability(self):
+        """Reduces the durability of an item by 1
+
+        Returns:
+            bool: True if the item will be deleted, False if it can still be used.
+        """
         self.durability -= 1
         if self.durability <= 0:
             self.state = "broken"

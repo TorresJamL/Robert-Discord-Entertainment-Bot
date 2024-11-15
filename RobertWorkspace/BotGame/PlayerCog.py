@@ -54,20 +54,9 @@ class Player:
         else:
             return "Inventory is full"
         
-    # def remove_from_inv(self, item):
-    #     if len(self.inventory) > 0:
-    #         self.inventory.remove(item)
-    #     else:
-    #         return "Inventory is empty"
-        
-    # def use_item(self, item: Item):
-    #     if item in self.inventory:
-    #         should_delete = item.lose_durability()
-    #         if should_delete:
-    #             self.remove_from_inv(item)
-    #             del item  # This ensures the item is properly deleted
-    #     else:
-    #         return f"Item: {item}, could not be found."
+    def use_item(self, item: Item):
+        if self.inventory.has_item(item):
+            self.inventory.use_item(item)
 
 #TODO: Make the Vanguard, Warrior, Harbinger, and Liferbinder classes. Give them character descriptions.
 #* Lifebinder: Includes a team heal and individual heal ability. Possibly passive regeneration. 
