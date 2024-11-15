@@ -26,5 +26,6 @@ def println(string):
     print(string)
     print()
 
+
 while True:
     pass
