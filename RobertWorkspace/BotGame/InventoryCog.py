@@ -22,15 +22,23 @@ class Inventory():
         return int((len(self.inventory) / self.size) * 100)
 
     def grow(self, amount: int = 1):
-        """Grows the inventory
+        """Grows the inventory capacity
 
         Args:
             amount (int, optional): How much to grow the inventory by. Defaults to 1.
         """
         self.size += amount
 
+    def shrink(self, amount: int = 1):
+        """Shrinks the inventory capacity
+
+        Args:
+            amount (int, optional): How much to shrink the inventory by. Defaults to 1.
+        """
+        self.size -= amount
+
     def add_item(self, item: Item):
-        """Adds an item to an inventory. Returns a string if inventory is full.
+        """Adds an item to an inventory. Returns a string only if inventory is full.
         Args:
             item (Item): The item to be added to the inventory.
         Returns: "Inventory full"
