@@ -6,6 +6,12 @@ class Inventory():
         self.size = size
         self.inventory = []
 
+    def __str__(self) -> str:
+        L = ""
+        for item in self.inventory:
+            L += str(item) + "\n"
+        return L
+
     def get_size(self):
         """Returns inventory size
         """
@@ -49,6 +55,16 @@ class Inventory():
             return "Inventory full"
 
     def remove_item(self, item: Item):
+        """Removes an item from the inventory
+
+        Args:
+            item (Item): An item in the inventory
+
+        Returns:
+            Returns "Inventory is already empty." if inventory is empty, \n
+            "Item could not be found." if the item could not be found, \n 
+            Nothing if an item was removed successfully.
+        """
         if self.is_empty():
             return "Inventory is already empty."
         elif item in self.inventory:
@@ -57,6 +73,15 @@ class Inventory():
             return "Item could not be found."
 
     def use_item(self, item: Item):
+        """Uses an item in the inventory, reduces it's durability.
+
+        Args:
+            item (Item): Item to be used. Reduces durability by 1.
+
+        Returns:
+            str : Returns empty string if item is removed, \n
+            otherwise returns "Item {item}, could not be found."
+        """
         if item in self.inventory:
             item = item # re-define 'item' from the parameter so VSC recognizes it's type.
             should_delete = item.lose_durability()

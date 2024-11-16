@@ -18,9 +18,9 @@ class Player:
                  ) -> None:
         self.name = name
         self.description = description
-        self.damage = 1
-        self.defense = 1
-        self.speed = 2
+        self.damage = damage
+        self.defense = defense
+        self.speed = speed
         self.health_points = 10
         self.weapon = None
         self.armor = None
@@ -29,9 +29,21 @@ class Player:
         # TODO: Initialize values within constructor parameters.
 
     def is_player_alive(self):
+        """Whether the player is alive
+        Returns:
+            bool: True if player is alive, false otherwise.
+        """
         return self.is_alive
 
-    def get_player_stats(self):
+    def get_inventory(self):
+        """Gets the inventory of the player.
+
+        Returns:
+            list: The inventory of the player as a list of items
+        """
+        return self.inventory
+
+    def get_stats(self):
         return f"Player: {self.name} \n HP: {self.health_points}\n Weapon: {self.weapon}\n Armor: {self.armor} \n Defense: {self.defense}\n Speed: {self.speed}\n Damage: {self.damage}"
 
     def take_damage(self, dmg):

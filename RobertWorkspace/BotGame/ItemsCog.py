@@ -35,7 +35,7 @@ class Item:
     def get_item_stats(self):
         return f"Item: {self.name}\n Durability: {self.durability}"
 
-    def __str__(self):
+    def __str__(self)->str:
         return Item.get_item_stats(self)
 
 class Weapon(Item):

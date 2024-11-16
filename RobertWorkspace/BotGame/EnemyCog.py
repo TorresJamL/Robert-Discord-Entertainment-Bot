@@ -30,14 +30,14 @@ class Enemy:
     def deal_damage(self, player):
         player.take_damage(self.damage)
 
-    def get_enemy_stats(self):
+    def get_stats(self):
         return f"Enemy: {self.name} \n HP: {self.health_points}\n Defense: {self.defense}\n Speed: {self.speed}\n Damage: {self.damage}\n Description: {self.description}"
 
     def get_description(self):
         return self.description
     
     def __str__(self):
-        return Enemy.get_enemy_stats(self)
+        return Enemy.get_stats(self)
 
 class Grunt(Enemy):
     def __init__(self, name, description: str) -> None:
