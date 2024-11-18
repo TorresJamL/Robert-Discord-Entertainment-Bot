@@ -17,6 +17,9 @@ class Enemy:
         self.ult_percent = 0.0
         self.description = description
     
+    def get_name(self):
+        return self.name
+
     def take_damage(self, dmg):
         damage_dealt = dmg - self.defense
         if damage_dealt <= 0:

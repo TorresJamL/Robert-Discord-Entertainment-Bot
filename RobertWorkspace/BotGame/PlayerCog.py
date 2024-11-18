@@ -61,14 +61,15 @@ class Player:
         enemy.take_damage(self.damage)
 
     def add_to_inv(self, item):
-        if len(self.inventory) < 5:
-            self.inventory.append(item)
-        else:
-            return "Inventory is full"
-        
+        self.inventory.add_item(item)
+
     def use_item(self, item: Item):
         if self.inventory.has_item(item):
             self.inventory.use_item(item)
+
+    def discard_item(self, item: Item):
+        if self.inventory.has_item(item):
+            self.inventory.remove_item(item)
 
 #TODO: Make the Vanguard, Warrior, Harbinger, and Liferbinder classes. Give them character descriptions.
 #* Lifebinder: Includes a team heal and individual heal ability. Possibly passive regeneration. 

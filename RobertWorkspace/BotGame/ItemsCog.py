@@ -10,6 +10,9 @@ class Item:
         self.durability = durability
         self.state = "Working"
 
+    def get_name(self):
+        return self.name
+
     def has_durability(self):
         """Checks if the item has durability
 

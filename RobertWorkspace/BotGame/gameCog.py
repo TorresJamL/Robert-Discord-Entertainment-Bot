@@ -29,17 +29,16 @@ class Context(discord.ext.commands.context.Context):
         super().__init__()
 
 class Game(commands.Cog):
-    
     THEBOOLEAN: bool
     def __init__(self, client) -> None:
         self.prompt_message = None
         self.is_getting_players = False
-        self.item_list: Item = []
+        self.item_list: list[Item] = []
         self.client = client
-        self.enemy_list: Enemy = []
+        self.enemy_list: list[Enemy] = []
         # player list dictionary. Key is the user ID, value is the user's inputted name
         self.player_list = {} # ID : user nickname
-    
+
     @commands.command(name = "Placeholder-Text")
     async def game_start(self, ctx: Context):
         self.is_getting_players = True
@@ -63,18 +62,24 @@ class Game(commands.Cog):
             await ctx.send(f"An error occured while processing {error}")
 
     # Returns an item from the item list
-    def get_item(self, item):
-        if item in self.item_list:
-            return item
-        else:
-            return "GameCog Error: Item not found"
+    def get_item(self, item_name: str):
+        """Gets an item using its name
+        Args:
+            item_name (str): The name of the item you're trying to get
+        Returns:
+            Item: Returns an Item if an item is found, None otherwise
+        """
+        for item in self.item_list:
+            if item_name == item.get_name():
+                return item
+        return None
     
     # Returns an enemy from the enemy list
-    def get_enemy(self, enemy):
-        if enemy in self.enemy_list:
-            return enemy
-        else:
-            return "GameCog Error: Enemy not found"
+    def get_enemy(self, enemy_name: str):
+        for enemy in self.enemy_list:
+            if enemy_name == enemy.get_name():
+                return enemy
+        return None
     
     async def prompt_for_players(self, ctx: Context):
         self.prompt_message = await ctx.send("```React with ✅ if you wish to be a player. Once everyone who wants to play has reacted, react with #️⃣ to end player selection sequence.```")
@@ -111,7 +116,6 @@ class Game(commands.Cog):
     def load_game_data(self, data_file):
         enemies = []
         items = []
-
 
         with open(data_file, 'r') as file:
             data = json.load(file)
