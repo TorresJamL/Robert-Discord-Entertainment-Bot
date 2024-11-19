@@ -22,8 +22,8 @@ class Player:
         self.defense = defense
         self.speed = speed
         self.health_points = 10
-        self.weapon = None
-        self.armor = None
+        self.weapon = weapon
+        self.armor = armor
         self.is_alive = True
         self.inventory = Inventory(size= 10)
         # TODO: Initialize values within constructor parameters.
@@ -37,7 +37,6 @@ class Player:
 
     def get_inventory(self):
         """Gets the inventory of the player.
-
         Returns:
             list: The inventory of the player as a list of items
         """
@@ -81,7 +80,7 @@ class Player:
 
 #? Dunce class that is almost always useless but can land a super heavy hit 1 / 1000 times.
 class Vanguard(Player):
-    def __init__(self, _name):
+    def __init__(self, _name, ):
         super().__init__(name= _name, description= "place-holder-text")
 
 class Warrior(Player):

@@ -62,12 +62,12 @@ class Game(commands.Cog):
             await ctx.send(f"An error occured while processing {error}")
 
     # Returns an item from the item list
-    def get_item(self, item_name: str):
-        """Gets an item using its name
+    def get_item(self, item_name: str)->(Item | None):
+        """Gets an item using its name.
         Args:
-            item_name (str): The name of the item you're trying to get
+            item_name (str): The name of the item you're trying to get.
         Returns:
-            Item: Returns an Item if an item is found, None otherwise
+            (Item | None): Returns an Item if an item is found, None otherwise.
         """
         for item in self.item_list:
             if item_name == item.get_name():
@@ -75,7 +75,13 @@ class Game(commands.Cog):
         return None
     
     # Returns an enemy from the enemy list
-    def get_enemy(self, enemy_name: str):
+    def get_enemy(self, enemy_name: str)->(Enemy | None):
+        """Gets an enemy using its name.
+        Args:
+            enemy_name (str): The name of the enemy you're trying to get.
+        Returns:
+            (Enemy | None): Returns an Enemy if an item is found, None otherwise.
+        """
         for enemy in self.enemy_list:
             if enemy_name == enemy.get_name():
                 return enemy
