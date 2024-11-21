@@ -8,6 +8,7 @@ tracemalloc.start()
 
 from discord.ext import commands
 
+from PlayerCog import Player
 from EnemyCog import Enemy, Grunt, Fighter, Boss
 from ItemsCog import Item, Weapon, Potion, Armor
 
@@ -39,28 +40,6 @@ class Game(commands.Cog):
         # player list dictionary. Key is the user ID, value is the user's inputted name
         self.player_list = {} # ID : user nickname
 
-    @commands.command(name = "Placeholder-Text")
-    async def game_start(self, ctx: Context):
-        self.is_getting_players = True
-        self.enemy_list, self.item_list = self.load_game_data("BotGame/CogData.json")
-        await self.prompt_for_players(self, ctx)
-
-    @commands.command(name = "nickname")
-    async def change_name(self, ctx: Context, *, new_name: str):
-        try:
-            if self.is_getting_players:
-                user_id = ctx.author.id
-                user = await self.client.fetch_user(ctx.author.id)
-                self.player_list[user_id] = new_name
-                print(f"{user} has updated their name {self.player_list}")
-                await ctx.send(f"```Your name in game has been updated: {self.player_list}```")
-            else:
-                await ctx.send("Name changing is only available during player selection.")
-        except Exception as error:
-            print(f"An error has occured: {error}")
-        finally:
-            await ctx.send(f"An error occured while processing {error}")
-
     # Returns an item from the item list
     def get_item(self, item_name: str)->(Item | None):
         """Gets an item using its name.
@@ -87,6 +66,26 @@ class Game(commands.Cog):
                 return enemy
         return None
     
+    @commands.command(name = "start")
+    async def game_start(self, ctx: Context):
+        self.is_getting_players = True
+        self.enemy_list, self.item_list = self.load_game_data("BotGame/CogData.json")
+        await self.prompt_for_players(self, ctx)
+
+    @commands.command(name = "nickname")
+    async def change_name(self, ctx: Context, *, new_name: str):
+        try:
+            if self.is_getting_players:
+                user_id = ctx.author.id
+                user = await self.client.fetch_user(ctx.author.id)
+                self.player_list[user_id] = new_name
+                print(f"{user} has updated their name {self.player_list}")
+                await ctx.send(f"```Your name in game has been updated: {self.player_list}```")
+            else:
+                await ctx.send("Name changing is only available during player selection.")
+        except Exception as error:
+            print(f"An error has occured: {error}")
+
     async def prompt_for_players(self, ctx: Context):
         self.prompt_message = await ctx.send("```React with ✅ if you wish to be a player. Once everyone who wants to play has reacted, react with #️⃣ to end player selection sequence.```")
         await self.prompt_message.add_reaction('✅')

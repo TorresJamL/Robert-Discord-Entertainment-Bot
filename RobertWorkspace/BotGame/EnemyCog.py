@@ -17,6 +17,9 @@ class Enemy:
         self.ult_percent = 0.0
         self.description = description
     
+    def is_enemy_alive(self): 
+        return self.is_alive
+
     def get_name(self):
         return self.name
 
@@ -26,6 +29,7 @@ class Enemy:
             damage_dealt = 0
         if damage_dealt > self.health_points:
             self.is_alive = False
+            print("Enemy Defeated!")
         else:
             self.health_points -= damage_dealt
         print(f"Player strikes for: {damage_dealt} damage!")

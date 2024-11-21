@@ -48,14 +48,14 @@ for i in range(8):
 print(item)
 print(inv)
 
-# while player1.is_player_alive():
-#     player1.deal_damage(enemy1)
-#     println(player1.get_stats())
-#     enemy1.deal_damage(player1)
-#     println(enemy1.get_stats())
-#     if run_count > 100:
-#         print("Exceeded Run Limit")
-#         StupidError
-#         break
-#     run_count += 1
+while (player1.is_player_alive() and enemy1.is_enemy_alive()):
+    player1.deal_damage(enemy1)
+    println(player1.get_stats())
+    enemy1.deal_damage(player1)
+    println(enemy1.get_stats())
+    if run_count > 100:
+        print("Exceeded Run Limit")
+        StupidError
+        break
+    run_count += 1
  

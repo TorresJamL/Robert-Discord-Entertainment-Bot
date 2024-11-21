@@ -52,6 +52,7 @@ class Player:
                 damage_dealt = 0
             if damage_dealt > self.health_points:
                 self.is_alive = False
+                print("Player down!")
             else:
                 self.health_points -= damage_dealt
             print(f"Enemy strikes for: {damage_dealt} damage!")
@@ -69,28 +70,3 @@ class Player:
     def discard_item(self, item: Item):
         if self.inventory.has_item(item):
             self.inventory.remove_item(item)
-
-#TODO: Make the Vanguard, Warrior, Harbinger, and Liferbinder classes. Give them character descriptions.
-#* Lifebinder: Includes a team heal and individual heal ability. Possibly passive regeneration. 
-#* Warrior: Includes battle buffs.
-#* Harbinger: Includes abilities like foresight (sees the probability of an encounter).
-#* Vanguard: Includes higher natural health/armor, armor is more effective (In return weapons are less effective), and they can taunt the 
-#* enemy to make them target themselves.
-#! All abilities need a cooldown (Likely implemented in GameCog)
-
-#? Dunce class that is almost always useless but can land a super heavy hit 1 / 1000 times.
-class Vanguard(Player):
-    def __init__(self, _name, ):
-        super().__init__(name= _name, description= "place-holder-text")
-
-class Warrior(Player):
-    def __init__(self, _name):
-        super().__init__(name= _name, description= "place-holder-text")
-
-class Harbinger(Player):
-    def __init__(self, _name):
-        super().__init__(name= _name, description= "place-holder-text")
-
-class LifeBinder(Player):
-    def __init__(self, _name):
-        super().__init__(name= _name, description= "place-holder-text")

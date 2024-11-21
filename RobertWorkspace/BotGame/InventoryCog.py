@@ -29,7 +29,6 @@ class Inventory():
 
     def grow(self, amount: int = 1):
         """Grows the inventory capacity
-
         Args:
             amount (int, optional): How much to grow the inventory by. Defaults to 1.
         """
@@ -37,7 +36,6 @@ class Inventory():
 
     def shrink(self, amount: int = 1):
         """Shrinks the inventory capacity
-
         Args:
             amount (int, optional): How much to shrink the inventory by. Defaults to 1.
         """
@@ -56,10 +54,8 @@ class Inventory():
 
     def remove_item(self, item: Item):
         """Removes an item from the inventory
-
         Args:
             item (Item): An item in the inventory
-
         Returns:
             Returns "Inventory is already empty." if inventory is empty, \n
             "Item could not be found." if the item could not be found, \n 
@@ -74,10 +70,8 @@ class Inventory():
 
     def use_item(self, item: Item):
         """Uses an item in the inventory, reduces it's durability.
-
         Args:
             item (Item): Item to be used. Reduces durability by 1.
-
         Returns:
             str : Returns empty string if item is removed, \n
             otherwise returns "Item {item}, could not be found."

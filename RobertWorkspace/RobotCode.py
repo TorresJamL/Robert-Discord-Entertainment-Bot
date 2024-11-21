@@ -11,6 +11,8 @@ from text_to_speech_cog import *
 from moderation_cog import *
 from fun_cog import *
 from discord.ext import commands, tasks
+from bs4 import BeautifulSoup
+import requests
 
 sys.path.insert(0, FILE_PATH) 
 
@@ -86,7 +88,12 @@ async def randSCP(ctx):
         scpNum = f"0{num}"
     else:
         scpNum = num
-    await ctx.send(f'https://scp-wiki.wikidot.com/scp-{scpNum}' )
+    url_link = f'https://scp-wiki.wikidot.com/scp-{scpNum}'
+    try:
+        pass
+    except Exception:
+        print()
+    await ctx.send(url_link)
 
 # Add to new funCog
 def check_string_in_file(filename, target_string):
