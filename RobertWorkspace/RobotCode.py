@@ -81,7 +81,12 @@ async def VC(ctx)->None:
     await join(ctx)
 
 @client.command()
-async def randSCP(ctx):
+async def randSCP(ctx: Context):
+    """Sends a link to a random SCP 
+
+    Args:
+        ctx (Context): _description_
+    """
     scpNum = ''
     num = random.randint(1, 8000)
     if (num < 100):
@@ -90,10 +95,17 @@ async def randSCP(ctx):
         scpNum = num
     url_link = f'https://scp-wiki.wikidot.com/scp-{scpNum}'
     try:
-        pass
-    except Exception:
-        print()
-    await ctx.send(url_link)
+        response = requests.get(url_link)
+        data = response.text
+        # Parse the HTML content
+        soup = BeautifulSoup(data, 'html.parser')
+        # Extract specific elements
+        description = soup.find('strong', string='Description:').next_sibling.strip()
+        await ctx.send(description)
+    except Exception as error:
+        print(f"An Error occured:\n {error}")
+    finally:
+        await ctx.send(url_link)
 
 # Add to new funCog
 def check_string_in_file(filename, target_string):
