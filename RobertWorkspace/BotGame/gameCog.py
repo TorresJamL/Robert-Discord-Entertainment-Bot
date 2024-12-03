@@ -24,6 +24,14 @@ from ItemsCog import Item, Weapon, Potion, Armor
 # Items & enemies are contained within a json file (CogData.json)
 
 # Players will be able to name themselves after selection sequence
+#! Implememt the ability to SAVE the current game. 
+#   Save EVERYTHING to a file and give that file a custom ID\name to be called from.
+#   Auto saves after each level.
+
+#? Make the game board 3 (maybe 4) dimensional (The array). 
+#   Every 2D board within a 3d box represents a layer of that level. Each layer should have a boss and a way to traverse to another layer.
+#   The boss should drop an item and a key. Once a [layer_amount] of keys are gotten, you should be able to leave that level.
+#   Levels are represented by the 3rd dimension. Levels should increase the difficulty by a crap ton.
 class Context(discord.ext.commands.context.Context):
     def __init__(self, client) -> None:
         self.client = client
@@ -31,7 +39,7 @@ class Context(discord.ext.commands.context.Context):
 
 class Game(commands.Cog):
     THEBOOLEAN: bool
-    def __init__(self, client) -> None:
+    def __init__(self, client: commands.Bot) -> None:
         self.prompt_message = None
         self.is_getting_players = False
         self.item_list: list[Item] = []
@@ -71,8 +79,16 @@ class Game(commands.Cog):
                 return enemy
         return None
     
-    def initializeBoard(self):
-        pass
+    @commands.command(name= "playerlist")
+    async def get_players_in_game(self, ctx):
+        players = "PLAYERLIST\n"
+        for id, nick in self.player_list.items():
+            print(f"User: {self.client.get_user(id)} | ID: {id} | Nickname: {nick}")
+            players += f"- User: {self.client.get_user(id)} | Nickname: {nick}\n"
+        await ctx.send(f"```{players}```")
+
+    def initialize_board(self):
+        [i for i in range(8)]
 
     @commands.command(name = "start")
     async def game_start(self, ctx: Context):
