@@ -94,3 +94,19 @@ class FunCog(commands.Cog):
                 await ctx.send("aw, dang it")
         except Exception as e:
             await ctx.send(f'An error occurred: {str(e)}')
+
+    @commands.command(name= "DomainExpansion")
+    async def disconnect_all(self, ctx: Context):
+        """_summary_
+
+        Args:
+            ctx (Context): _description_
+        """
+        if (ctx.author.voice):
+            channel = ctx.message.author.voice.channel
+            await channel.connect()
+        else:
+            await ctx.send('goofy')
+            return
+        
+        

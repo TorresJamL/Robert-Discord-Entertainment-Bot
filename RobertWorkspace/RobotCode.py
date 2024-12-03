@@ -3,6 +3,8 @@ import asyncio
 import sys
 import random
 import tracemalloc
+import logging
+
 tracemalloc.start()
 
 # Cog imports 
@@ -20,6 +22,7 @@ from BotGame import GameCog
 
 intents = discord.Intents.all()
 client = commands.Bot(command_prefix='-', intents=intents)
+default_channel = None
 
 # TODO: 
 #   Replace every instance of "JAMIL_ID" with a new role specifically for who's managing the bot.
@@ -82,10 +85,9 @@ async def VC(ctx)->None:
 
 @client.command()
 async def randSCP(ctx: Context):
-    """Sends a link to a random SCP 
-
+    """Sends a link to a random SCP. Also sends the description of said SCP presuming the author ain't quirky.
     Args:
-        ctx (Context): _description_
+        ctx (Context): The context of the client side function call. 
     """
     scpNum = ''
     num = random.randint(1, 8000)
@@ -258,7 +260,7 @@ async def VC_gamblecore(ctx):
     except Exception as e:
         print(f"Error occured: {e}")
     finally:
-        await ctx.send("```Unfortunatly, an error occured. If you'd like to report this error, do not, as   does not care about the bug and especially not you.```")
+        await ctx.send("```Unfortunatly, an error occured. If you'd like to report this error, do not, as Jamil does not care about the bug and especially not you.```")
 
 # Undecided
 async def toggle_vc_move(ctx):
@@ -300,13 +302,46 @@ async def vc_move():
 async def before_vc_move():
     await client.wait_until_ready()
 
+@client.command(name= "setDefaultChannel")
+async def set_default_channel(ctx, channel_id: int):
+    default_channel = discord.Guild.get_channel(channel_id)
+    print(f"Gave result: {default_channel}")
+    if default_channel == None:
+        await ctx.send("Channel could not be found. Try again with a valid channel ID.")
+    else:
+        await ctx.send("Channel Default Set Successfully✅")
+
+@tasks.loop(seconds= 20.0)
+async def farm_merge_exterminator():
+    channel = client.get_channel(848400178872713246)
+    member_list = client.get_all_members()
+    for member in member_list:
+        if member.activities != ():
+            print(f"{member.name} \n\tstatus:{member.activities}")
+        if "league of legends" in str(member.activity).lower():
+            print(f"User {member.name} has been eradicated")
+            await channel.send("Peace has been restored...")
+            await member.ban(reason= "Be Better")
+
 @client.event
 async def on_ready():
+    # 848400178872713246
+    channel = default_channel
+    print(channel)
+    if channel != None:
+        print("Condition Passed.")
+        channel.send("Robert Online✅")
+    else: 
+        print("Condition Failed.")
     print(f'Logged in as {client.user}')
     # Initialize a dictionary to store submissions
     client.submissions = {}  
     if (vc_move.is_running):
         vc_move.stop()
+    try:
+        await farm_merge_exterminator.start()
+    except Exception as err:
+        print(f"An error occured: {err}")
 
 # Create instances of the game cog, tts cog, and moderation cog
 game_cog = GameCog.Game(client)

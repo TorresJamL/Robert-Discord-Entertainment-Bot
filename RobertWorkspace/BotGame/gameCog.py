@@ -39,6 +39,11 @@ class Game(commands.Cog):
         self.enemy_list: list[Enemy] = []
         # player list dictionary. Key is the user ID, value is the user's inputted name
         self.player_list = {} # ID : user nickname
+        self.board = []
+        self.encounters = {
+            0 : "Enemy Encounter",
+            1 : "Item Encounter",
+        }
 
     # Returns an item from the item list
     def get_item(self, item_name: str)->(Item | None):
@@ -66,14 +71,27 @@ class Game(commands.Cog):
                 return enemy
         return None
     
+    def initializeBoard(self):
+        pass
+
     @commands.command(name = "start")
     async def game_start(self, ctx: Context):
+        """Starts the game, what'd you expect?
+        Args:
+            ctx (Context): _description_
+        """
         self.is_getting_players = True
         self.enemy_list, self.item_list = self.load_game_data("BotGame/CogData.json")
         await self.prompt_for_players(self, ctx)
 
     @commands.command(name = "nickname")
     async def change_name(self, ctx: Context, *, new_name: str):
+        """If a game is starting, calling nickname will change the player's name for the game.\n
+        Format: -nickname [nickname]
+        Args:
+            ctx (Context): The context of the client side function call. 
+            new_name (str): Player inputted nickname for the rest of the game
+        """
         try:
             if self.is_getting_players:
                 user_id = ctx.author.id
@@ -87,12 +105,18 @@ class Game(commands.Cog):
             print(f"An error has occured: {error}")
 
     async def prompt_for_players(self, ctx: Context):
+        """Sends the game prompt message to discord."""
         self.prompt_message = await ctx.send("```React with ✅ if you wish to be a player. Once everyone who wants to play has reacted, react with #️⃣ to end player selection sequence.```")
         await self.prompt_message.add_reaction('✅')
         await self.prompt_message.add_reaction('#️⃣')
 
     @commands.Cog.listener()
     async def on_reaction_add(self, reaction, user):
+        """Listens for discord reactions on the game prompt message.
+        Args:
+            reaction (_type_): A discord reaction
+            user (_type_):  A discord user
+        """
         message = reaction.message
         channel = message.channel
         
@@ -119,6 +143,14 @@ class Game(commands.Cog):
 
     # Returns enemies and items from the CogData.json file. 
     def load_game_data(self, data_file):
+        """Loads the data from the json file into two lists. A list of enemies and a list of inventories.
+
+        Args:
+            data_file (string file name): A json file containing every enemy and item in the game.
+
+        Returns:
+            ( list[Enemy], list[Item] ): Returns two lists, a list of loaded enemies and loaded items. Not a tuple.
+        """
         enemies = []
         items = []
 
