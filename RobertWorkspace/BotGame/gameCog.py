@@ -32,6 +32,7 @@ from ItemsCog import Item, Weapon, Potion, Armor
 #   Every 2D board within a 3d box represents a layer of that level. Each layer should have a boss and a way to traverse to another layer.
 #   The boss should drop an item and a key. Once a [layer_amount] of keys are gotten, you should be able to leave that level.
 #   Levels are represented by the 3rd dimension. Levels should increase the difficulty by a crap ton.
+
 class Context(discord.ext.commands.context.Context):
     def __init__(self, client) -> None:
         self.client = client
