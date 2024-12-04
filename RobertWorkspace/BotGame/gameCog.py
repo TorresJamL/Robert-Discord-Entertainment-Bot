@@ -94,7 +94,7 @@ class Game(commands.Cog):
     async def game_start(self, ctx: Context):
         """Starts the game, what'd you expect?
         Args:
-            ctx (Context): _description_
+            ctx (Context): The context the command was called in
         """
         self.is_getting_players = True
         self.enemy_list, self.item_list = self.load_game_data("BotGame/CogData.json")
