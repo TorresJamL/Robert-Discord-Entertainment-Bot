@@ -18,7 +18,7 @@ import requests
 
 sys.path.insert(0, FILE_PATH) 
 
-from BotGame import GameCog
+#from BotGame import GameCog
 
 intents = discord.Intents.all()
 client = commands.Bot(command_prefix='-', intents=intents)
@@ -311,17 +311,17 @@ async def set_default_channel(ctx, channel_id: int):
     else:
         await ctx.send("Channel Default Set Successfully✅")
 
-@tasks.loop(seconds= 20.0)
-async def farm_merge_exterminator():
-    channel = client.get_channel(848400178872713246)
-    member_list = client.get_all_members()
-    for member in member_list:
-        if member.activities != ():
-            print(f"{member.name} \n\tstatus:{member.activities}")
-        if "league of legends" in str(member.activity).lower():
-            print(f"User {member.name} has been eradicated")
-            await channel.send("Peace has been restored...")
-            await member.ban(reason= "Be Better")
+# @tasks.loop(seconds= 20.0)
+# async def farm_merge_exterminator():
+#     channel = client.get_channel(848400178872713246)
+#     member_list = client.get_all_members()
+#     for member in member_list:
+#         if member.activities != ():
+#             print(f"{member.name} \n\tstatus:{member.activities}")
+#         if "league of legends" in str(member.activity).lower():
+#             print(f"User {member.name} has been eradicated")
+#             await channel.send("Peace has been restored...")
+#             await member.ban(reason= "Be Better")
 
 @client.event
 async def on_ready():
@@ -338,13 +338,13 @@ async def on_ready():
     client.submissions = {}  
     if (vc_move.is_running):
         vc_move.stop()
-    try:
-        await farm_merge_exterminator.start()
-    except Exception as err:
-        print(f"An error occured: {err}")
+    # try:
+    #     await farm_merge_exterminator.start()
+    # except Exception as err:
+    #     print(f"An error occured: {err}")
 
 # Create instances of the game cog, tts cog, and moderation cog
-game_cog = GameCog.Game(client)
+#game_cog = GameCog.Game(client)
 tts_cog = TextToSpeech(client)
 mod_cog = ModerationCog(client)
 fun_cog = FunCog(client)
@@ -353,7 +353,7 @@ fun_cog = FunCog(client)
 #mc = MusicCog(client)
 # Run the bot
 async def main():
-    await client.add_cog(game_cog)
+    #await client.add_cog(game_cog)
     await client.add_cog(tts_cog)
     await client.add_cog(mod_cog)
     await client.add_cog(fun_cog)    
