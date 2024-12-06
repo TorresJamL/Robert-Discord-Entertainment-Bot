@@ -18,7 +18,7 @@ import requests
 
 sys.path.insert(0, FILE_PATH) 
 
-#from BotGame import GameCog
+from BotGame import gameCog as GameCog
 
 intents = discord.Intents.all()
 client = commands.Bot(command_prefix='-', intents=intents)
@@ -344,7 +344,7 @@ async def on_ready():
     #     print(f"An error occured: {err}")
 
 # Create instances of the game cog, tts cog, and moderation cog
-#game_cog = GameCog.Game(client)
+game_cog = GameCog.Game(client)
 tts_cog = TextToSpeech(client)
 mod_cog = ModerationCog(client)
 fun_cog = FunCog(client)
@@ -353,7 +353,7 @@ fun_cog = FunCog(client)
 #mc = MusicCog(client)
 # Run the bot
 async def main():
-    #await client.add_cog(game_cog)
+    await client.add_cog(game_cog)
     await client.add_cog(tts_cog)
     await client.add_cog(mod_cog)
     await client.add_cog(fun_cog)    
