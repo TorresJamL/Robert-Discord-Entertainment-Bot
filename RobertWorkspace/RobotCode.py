@@ -16,7 +16,10 @@ from discord.ext import commands, tasks
 from bs4 import BeautifulSoup
 import requests
 
-sys.path.insert(0, FILE_PATH) 
+sys.path.insert(0, FILE_PATH)
+
+#! Message to future me: 
+#* Increment the amount of problems you've had with imports here: 6
 
 from BotGame import gameCog as GameCog
 
