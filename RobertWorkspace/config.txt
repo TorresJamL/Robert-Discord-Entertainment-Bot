@@ -1,3 +1,0 @@
-Default Channel:
-Bot Managers:
-BotGame Manager[Optional]:
