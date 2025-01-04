@@ -14,9 +14,14 @@ from text_to_speech_cog import *
 from moderation_cog import *
 import time
 import sys
+from RobotCodelib import *
+
+from bs4 import BeautifulSoup
+import requests
 '''
 Cog to store all of the "fun" / "entertainment" commands for ROBERT
 '''
+
 def time_elapsed(func):
     """Tracks the runtime of function 'func'."""
     async def find_elapsed_time(self, ctx, *args, **kwargs):
@@ -49,7 +54,6 @@ class FunCog(commands.Cog):
         super().__init__()
 
     @commands.command(name = "ping")
-    #@time_elapsed
     async def ping_user(self, ctx: Context, user: Member, amount: int = 1, *, message: str = "")->None:
         """Pings a user a certain amount of times with a custom message.
 
@@ -108,5 +112,75 @@ class FunCog(commands.Cog):
         else:
             await ctx.send('goofy')
             return
-        
-        
+    
+    @commands.command(name= 'sacrifice')
+    async def randVC(self, ctx):
+        try:
+            await join(ctx)
+
+            if ctx.guild.voice_client is None:
+                return await ctx.send('I AINT EVEN THERE')
+
+            voice_channel_id = ctx.guild.voice_client.channel.id
+            await ctx.send(f'```Voice Channel ID: {voice_channel_id}```')
+            
+            voice_channel = discord.utils.get(ctx.guild.voice_channels, id=voice_channel_id)
+            print(voice_channel)
+            
+            if not voice_channel:
+                return await ctx.send('I give up')
+
+            members = voice_channel.members
+
+            random_member = random.choice(members)
+
+            await ctx.send(f'```Random User ID from the voice channel: {random_member}```')
+            for _ in range(20):
+                print(str(random_member.id))
+                print(not check_string_in_file("blacklist.txt", str(random_member.id)))
+                if not check_string_in_file("blacklist.txt", str(random_member.id)):
+                    await disconnect(random_member)
+                    await ctx.send(f"```{random_member} has been sacrificed.```")
+                    await leave(ctx)
+                    return
+                random_member = random.choice(members)
+                await ctx.send(f'```Random User from the voice channel: {random_member}\nUser ID: {random_member.id}```')
+
+            await ctx.send("```Function ran too many time, try again later...```")
+            await leave(ctx)
+        except Exception as e:
+            print(f"An error occurred: {e}")
+            await ctx.send('An error occurred while trying to disconnect a member of the voice channel.')
+            await leave(ctx)
+
+    @commands.command()
+    async def scp(self, ctx, scp_num: int = None):
+        """If given a scp number, it will link said scp. Otherwise, sends a link to a random SCP. 
+        Also sends the description of said SCP presuming the author ain't quirky.
+        Arguments:
+            ctx (Context): The context of the client side function call. 
+            scp_num (int): The number of the scp if one is desired to be searched for. Defaults to None
+        """
+        scpNum = ""
+        if scp_num == None or not(within_range(scp_num, 0, 8000)):
+            num = random.randint(1, 8000)
+            if (num < 100):
+                scpNum = f"0{num}"
+            else:
+                scpNum = num
+        else: 
+            scpNum = scp_num
+
+        url_link = f'https://scp-wiki.wikidot.com/scp-{scpNum}'
+        try:
+            response = requests.get(url_link)
+            data = response.text
+            # Parse the HTML content
+            soup = BeautifulSoup(data, 'html.parser')
+            # Extract specific elements
+            description = soup.find('strong', string='Description:').next_sibling.strip()
+            await ctx.send(description)
+        except Exception as error:
+            print(f"An Error occured (SCP):\n {error}")
+        finally:
+            await ctx.send(url_link)

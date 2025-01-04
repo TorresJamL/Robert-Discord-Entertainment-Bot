@@ -2,6 +2,7 @@ import asyncio
 import discord
 import random
 import tracemalloc
+import numpy
 tracemalloc.start()
 
 from PlayerCog import *
@@ -18,8 +19,8 @@ class Cell:
         return self.__state
     
     def get_players_on_cell(self):
-        return self.__players
-
+        return (self.__players, len(self.__players))
+    
     def get_complete_cell_status(self) -> tuple[str | bool]:
         return (self.__state, True if self.__players != None else False)
 
@@ -27,12 +28,12 @@ class Cell:
         self.__state = cell_state
 
     def add_players_to_cell(self, player: Player):
-        self.__players += [player]
+        self.__players.append(player)
 
     def __str__(self):
         return self.__state
 class Board:
-    def __init__(self, width, height):
+    def __init__(self, width: int, height: int, ratios: list[int]):
         self.__board = [[ Cell() for i in range(width)] for j in range(height)]
         self.__encounters = {
             'Wall': 10,
@@ -40,7 +41,10 @@ class Board:
             'Item': 5,
             'Open': 20
         }
-
+        #? Item space should be a shop encounter while open spaces have a random chance of dropping an item. As do enemies.
+        """
+        Each encounter should be ratios that total up to the amount of space of a layer.
+        """
     def initialize_board(self):
         one_time: list[str] = ['T', 'B'] # T: Layer travel space, B: boss
         for i in range():
