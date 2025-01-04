@@ -2,18 +2,12 @@ from discord.abc import Connectable
 import pyttsx3
 import discord
 from discord.ext import commands
+from discord.voice_client import VoiceClient
+from discord.ext.commands.context import Context
 import asyncio
 import tracemalloc
 
 tracemalloc.start()
-class VoiceClient(discord.voice_client.VoiceClient):
-    def __init__(self, client: discord.Client, channel: Connectable) -> None:
-        super().__init__(client, channel)
-
-class Context(discord.ext.commands.context.Context):
-    def __init__(self, client) -> None:
-        self.client = client
-        super().__init__()
 
 class TextToSpeech(commands.Cog):
     engine = pyttsx3.init()
@@ -94,8 +88,13 @@ class TextToSpeech(commands.Cog):
 
     @commands.command(name= "say")
     async def say(self, ctx: Context, rate: int, volume: float, gender: int, *, text: str):
+        """Format: {rate: int} {volume: float between 0.0 and 1.0} {gender: int, either 1(female) or 0(male)} {text: string} 
+            A more customizable form of Dspeak. If nothing happens, presume an error occured. Otherwise, feedback should always be provided.
+        """
+        #TODO: The next 4 lines should only appear if Robert is not playing something. 
         print("TTS intiated...  \n")
         self.TTS_queue.append(text)
+        await ctx.send("```Text To Speech Initaited...```")
         print(f"Queue Length: {len(self.TTS_queue)} \nQueue: {self.TTS_queue}")
         try:
             voice_client = await self.join_vc(ctx)

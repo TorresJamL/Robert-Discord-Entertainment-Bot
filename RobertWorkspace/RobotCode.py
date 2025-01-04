@@ -14,6 +14,7 @@ from moderation_cog import *
 from fun_cog import *
 from music_cog import *
 from discord.ext import commands, tasks
+from discord.ext.commands.context import Context
 
 sys.path.insert(0, FILE_PATH)
 
@@ -32,7 +33,7 @@ default_channel = None
 #   Some functions use other functions that would make sense to leave in this file.
 #   Decide on what to do with those.
 
-async def send_submission(ctx, inputs_length, text: str)->None:
+async def send_submission(ctx: Context, inputs_length, text: str)->None:
     client_owner = await client.fetch_user(BOT_OWNER_ID)
     user_input_submission = text.split()
     if len(user_input_submission) == inputs_length:
