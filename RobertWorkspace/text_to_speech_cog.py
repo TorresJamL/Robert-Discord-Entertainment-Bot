@@ -13,6 +13,7 @@ class TextToSpeech(commands.Cog):
     engine = pyttsx3.init()
     def __init__(self, client):
         self.client = client
+        self.is_playing = False
         self.TTS_queue : list[str] = []
 
     async def join_vc(self, ctx: Context) -> VoiceClient:
@@ -91,15 +92,17 @@ class TextToSpeech(commands.Cog):
         """Format: {rate: int} {volume: float between 0.0 and 1.0} {gender: int, either 1(female) or 0(male)} {text: string} 
             A more customizable form of Dspeak. If nothing happens, presume an error occured. Otherwise, feedback should always be provided.
         """
-        #TODO: The next 4 lines should only appear if Robert is not playing something. 
-        print("TTS intiated...  \n")
         self.TTS_queue.append(text)
-        await ctx.send("```Text To Speech Initaited...```")
-        print(f"Queue Length: {len(self.TTS_queue)} \nQueue: {self.TTS_queue}")
+        await ctx.send(f"Text appended to queue. Queue position {len(self.TTS_queue) - 1}")
+        if not self.is_playing:
+            print("TTS intiated...  \n")
+            await ctx.send("```Text To Speech Initaited...```")
+            print(f"Queue Length: {len(self.TTS_queue)} \nQueue: {self.TTS_queue}")
         try:
             voice_client = await self.join_vc(ctx)
             print(f"voice client is a {type(voice_client)}")
             if not voice_client.is_playing():
+                self.is_playing = True
                 await self.speak(ctx, voice_client, text, rate, volume, gender)
         except Exception as error:
             print(f"(say) An error has occured: {error}")

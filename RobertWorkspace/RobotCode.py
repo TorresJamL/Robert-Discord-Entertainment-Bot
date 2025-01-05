@@ -135,7 +135,9 @@ async def get_voice_channels(ctx):
 # Command toggle to periodically move me between different occupied VCs
 # Move to funCog
 @client.command(name = 'VC_gamblecore')
-async def VC_gamblecore(ctx):
+async def VC_gamblecore(ctx: Context):
+    """DO NOT USE, in testing. Currently only affects the Bot Owner. aka, yours truly :)
+    """
     try:
         await toggle_vc_move(ctx)
         await ctx.send(f"VC hopping = {vc_move.is_running}")
@@ -158,10 +160,10 @@ async def toggle_vc_move(ctx):
 @tasks.loop(seconds = 1.0)
 async def vc_move():
     # Bot commands channel
-    bot_commands = client.get_channel(848400178872713246)
+    bot_commands = client.get_channel(BOT_COMMANDS)
 
     # Get a list of every channel's ID
-    voice_channel_list = await get_occupied_voice_channels()\
+    voice_channel_list = await get_occupied_voice_channels()
     
     if len(voice_channel_list) > 1:
         # Get a random channel's ID 
@@ -183,18 +185,9 @@ async def vc_move():
 async def before_vc_move():
     await client.wait_until_ready()
 
-@client.command(name= "setDefaultChannel")
-async def set_default_channel(ctx, channel_id: int):
-    default_channel = discord.Guild.get_channel(channel_id)
-    print(f"Gave result: {default_channel}")
-    if default_channel == None:
-        await ctx.send("Channel could not be found. Try again with a valid channel ID.")
-    else:
-        await ctx.send("Channel Default Set Successfully✅")
-
 # @tasks.loop(seconds= 20.0)
 # async def farm_merge_exterminator():
-#     channel = client.get_channel(848400178872713246)
+#     channel = client.get_channel()
 #     member_list = client.get_all_members()
 #     for member in member_list:
 #         if member.activities != ():
@@ -206,12 +199,11 @@ async def set_default_channel(ctx, channel_id: int):
 
 @client.event
 async def on_ready():
-    # 848400178872713246
-    channel = default_channel
+    channel = client.get_channel(BOT_COMMANDS)
     print(channel)
     if channel != None:
         print("Condition Passed.")
-        channel.send("Robert Online✅")
+        await channel.send("Robert Online ✅")
     else: 
         print("Condition Failed.")
     print(f'Logged in as {client.user}')

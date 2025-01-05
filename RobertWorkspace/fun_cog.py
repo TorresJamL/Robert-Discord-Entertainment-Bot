@@ -15,6 +15,7 @@ from moderation_cog import *
 import time
 import sys
 from RobotCodelib import *
+from discord.ext.commands.context import Context
 
 from bs4 import BeautifulSoup
 import requests
@@ -42,11 +43,6 @@ def time_elapsed(func):
         print(f"Elapsed time for {func.__name__}: {elapsed_time:.6f} seconds")
         return result
     return find_elapsed_time
-
-class Context(discord.ext.commands.context.Context):
-    def __init__(self, client) -> None:
-        self.client = client
-        super().__init__()
 
 class FunCog(commands.Cog):
     def __init__(self, client) -> None:
@@ -154,7 +150,7 @@ class FunCog(commands.Cog):
             await leave(ctx)
 
     @commands.command()
-    async def scp(self, ctx, scp_num: int = None):
+    async def scp(self, ctx: Context, scp_num: int = None):
         """If given a scp number, it will link said scp. Otherwise, sends a link to a random SCP. 
         Also sends the description of said SCP presuming the author ain't quirky.
         Arguments:

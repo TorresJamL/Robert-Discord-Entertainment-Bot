@@ -7,15 +7,9 @@ from discord.ext import commands
 from youtubesearchpython import VideosSearch
 from yt_dlp import YoutubeDL
 import traceback
-
-class VoiceClient(discord.voice_client.VoiceClient):
-    def __init__(self, client: discord.Client, channel: Connectable) -> None:
-        super().__init__(client, channel)
-
-class Context(discord.ext.commands.context.Context):
-    def __init__(self, client) -> None:
-        self.client = client
-        super().__init__()
+import threading
+from discord.ext.commands.context import Context
+from discord.voice_client import VoiceClient
 
 class MusicCog(commands.Cog):
     def __init__(self, bot):
@@ -47,9 +41,10 @@ class MusicCog(commands.Cog):
             self.is_playing = True
             m_url = self.music_queue[0][0]['source']
             self.music_queue.pop(0)
-            data = await self.ytdl.extract_info(m_url, download=False)
+            data = await self.ytdl.extract_info(m_url, download=False) ### ---- ###
             song = data['url']
             self.vc.play(discord.FFmpegPCMAudio(song, executable="ffmpeg.exe", **self.FFMPEG_OPTIONS), after=lambda e: asyncio.ensure_future(self.play_next()))
+            
             #! Issue revolves around WIFI speed.
             #? A possible solution is to download the video first, then play that. After it plays, overwrite it with the next song.
             
@@ -75,7 +70,6 @@ class MusicCog(commands.Cog):
             try:
                 title = self.ytdl.extract_info(item, download=False)["title"]
                 info_dict: dict = self.ytdl.extract_info(item, download=False)
-                #print(f"\n{list(info_dict.values())}\n")
                 return {'source': item, 'title': title}
             except Exception as error:
                 print(f"AN *{type(error)}* ERROR HAS OCCURED: {error}")
