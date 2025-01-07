@@ -16,6 +16,9 @@ def init(bot_client): ### Must be called in the main running file ###
 def within_range(num, lower_bound, upper_bound):
     return (num > lower_bound and num < upper_bound)
 
+def in_voice_channel(ctx):
+    pass
+
 def check_string_in_file(filename, target_string):
     with open(filename, 'r') as file:
         for line in file:
@@ -24,11 +27,18 @@ def check_string_in_file(filename, target_string):
     return False
 
 async def join(ctx):
+    """Joins the voice channel of the user who called the command.
+
+    Returns:
+        True if it successfully joined, false otherwise
+    """
     if (ctx.author.voice):
         channel = ctx.message.author.voice.channel
         await channel.connect()
+        return True
     else:
         await ctx.send('goofy')
+        return False
 
 async def leave(ctx):
     if (ctx.voice_client):
