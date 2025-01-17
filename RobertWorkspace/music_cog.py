@@ -33,8 +33,9 @@ class MusicCog(commands.Cog):
         super().__init__()
 
     @commands.command(pass_context=True)
-    async def clearQueue(self, ctx):
+    async def clearQueue(self, ctx: Context):
         self.music_queue = []
+        await ctx.send("Queue emptied")
 
     async def play_next(self):
         if len(self.music_queue) > 0:
@@ -60,6 +61,8 @@ class MusicCog(commands.Cog):
             try:
                 data = self.ytdl.extract_info(m_url, download=False)
                 song = data['url']
+                print(song)
+                print(song == m_url)
                 self.vc.play(discord.FFmpegPCMAudio(song, executable="ffmpeg.exe", **self.FFMPEG_OPTIONS), after=lambda e: asyncio.ensure_future(self.play_next()))
             except Exception as e:
                 print(f"An {type(e)} error occurred (play_music): {e}")
@@ -69,7 +72,6 @@ class MusicCog(commands.Cog):
         if item.startswith("https://"):
             try:
                 title = self.ytdl.extract_info(item, download=False)["title"]
-                info_dict: dict = self.ytdl.extract_info(item, download=False)
                 return {'source': item, 'title': title}
             except Exception as error:
                 print(f"AN *{type(error)}* ERROR HAS OCCURED: {error}")

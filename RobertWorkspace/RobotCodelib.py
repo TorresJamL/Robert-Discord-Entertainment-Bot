@@ -16,9 +16,6 @@ def init(bot_client): ### Must be called in the main running file ###
 def within_range(num, lower_bound, upper_bound):
     return (num > lower_bound and num < upper_bound)
 
-def in_voice_channel(ctx):
-    pass
-
 def check_string_in_file(filename, target_string):
     with open(filename, 'r') as file:
         for line in file:
@@ -86,3 +83,15 @@ async def get_occupied_voice_channels():
             return voice_channels_with_members
     except Exception as error:
         return f'An error has occured: {error} :\n get_occupied_voice_channels(ctx)'
+    
+async def is_member_in_voice(member: discord.Member):
+    pass
+
+async def get_member_info(member: discord.Member):
+    return {
+        "name": member.name,
+        "nick": member.nick,
+        "raw_status": member.raw_status,
+        "activity": member.activity,
+        "activities": member.activities
+    }

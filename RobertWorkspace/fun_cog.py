@@ -47,6 +47,7 @@ def time_elapsed(func):
 class FunCog(commands.Cog):
     def __init__(self, client) -> None:
         self.client = client
+        self.__L_upper_bound = 1_000_000_000
         super().__init__()
 
     @commands.command(name = "ping")
@@ -70,12 +71,19 @@ class FunCog(commands.Cog):
 
     @commands.command()
     async def L(self, ctx: Context):
-        randomNumber = random.randint(1, 1_000_000_000)
+        bound_reduction_num = random.randint(1, 10) # A random number to reduce the upper bound by whenever the user does not successfully shutdown my computer.
+        randomNumber = random.randint(1, self.__L_upper_bound)
+        randomNumber2 = random.randint(1, 1_000)
         if(randomNumber == 1_022_387):
             await ctx.send("You WIN!")
             os.system("shutdown /s /t 1")
+        elif randomNumber2 == 789:
+            await ctx.send("Ain't that unfortunate?")
+            ctx.author.timeout(until= datetime(discord.utils.utcnow() + timedelta(minutes= 30)), reason= "failed to gamble")
         else:
             await ctx.send(f"You got {randomNumber} not 1,022,387!")
+            self.__L_upper_bound -= bound_reduction_num
+            await ctx.send(f"Upper bound reduced by {bound_reduction_num}. The new upper bound is {self.__L_upper_bound}")
 
     @commands.command()
     async def LETSGOGAMBLING(self, ctx: Context):
