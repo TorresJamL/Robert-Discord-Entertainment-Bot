@@ -73,13 +73,21 @@ class FunCog(commands.Cog):
     async def L(self, ctx: Context):
         bound_reduction_num = random.randint(1, 10) # A random number to reduce the upper bound by whenever the user does not successfully shutdown my computer.
         randomNumber = random.randint(1, self.__L_upper_bound)
-        randomNumber2 = random.randint(1, 1_000)
+        randomNumber2 = random.randint(1, 1_0)
         if(randomNumber == 1_022_387):
             await ctx.send("You WIN!")
             os.system("shutdown /s /t 1")
-        elif randomNumber2 == 789:
+        elif randomNumber2 == 7:
             await ctx.send("Ain't that unfortunate?")
-            ctx.author.timeout(until= datetime(discord.utils.utcnow() + timedelta(minutes= 30)), reason= "failed to gamble")
+            try:
+                ctx.author.timeout(until= datetime(discord.utils.utcnow() + timedelta(minutes= 30)), reason= "failed to gamble")
+                print("Timeout successful?")
+                await ctx.send("I think it was successful, but honestly I dont know. And that scares me...")
+            except TypeError as te:
+                print(e)
+            except Exception as e:
+                print(f"An error occured{e}")
+                await ctx.send("What went wrong, like actually tho")
         else:
             await ctx.send(f"You got {randomNumber} not 1,022,387!")
             self.__L_upper_bound -= bound_reduction_num
