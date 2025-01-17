@@ -9,4 +9,4 @@ WatchBot.py
 # Extras
 extras.py
 music_cog.py
-__pycache__
+__pycache__/
