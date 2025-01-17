@@ -10,3 +10,4 @@ WatchBot.py
 extras.py
 music_cog.py
 __pycache__/
+*.pyc
