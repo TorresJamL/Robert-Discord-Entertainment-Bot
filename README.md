@@ -1,4 +1,4 @@
-# Robot Entertainment Bot (Known as Project Robert)
+# Robot Entertainment Bot (Known as "Robert")
 Packed in-development discord bot with basic features and more!
 
 ## Description

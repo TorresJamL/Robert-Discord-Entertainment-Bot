@@ -84,7 +84,7 @@ class FunCog(commands.Cog):
                 print("Timeout successful?")
                 await ctx.send("I think it was successful, but honestly I dont know. And that scares me...")
             except TypeError as te:
-                print(e)
+                print(te)
             except Exception as e:
                 print(f"An error occured{e}")
                 await ctx.send("What went wrong, like actually tho")
@@ -124,6 +124,10 @@ class FunCog(commands.Cog):
         else:
             await ctx.send('goofy')
             return
+        
+        members_in_voice = channel.members
+        for member in members_in_voice:
+            member.move_to(None)
     
     @commands.command(name= 'sacrifice')
     async def randVC(self, ctx):
