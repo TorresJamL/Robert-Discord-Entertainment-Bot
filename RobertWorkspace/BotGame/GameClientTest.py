@@ -80,7 +80,7 @@ def displayBoard(grid):
 
 displayBoard(board)
 
-class WeightedDict(dict):
+class WeightedDict(dict[str : int]):
     """A type of dictionary meant to be used for weighted random chances. Where the value must be an integer.
     """ 
 

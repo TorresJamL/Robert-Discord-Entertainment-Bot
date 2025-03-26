@@ -50,8 +50,11 @@ class Game(commands.Cog):
         self.player_list = {} # ID : user nickname
         self.board = []
         self.encounters = {
-            0 : "Enemy Encounter",
-            1 : "Item Encounter",
+            "O" : self.encounter("open"),
+            "E" : self.encounter("enemy"),
+            "I" : self.encounter("shop"),
+            "T" : self.encounter("traversal"),
+            "B" : self.encounter("boss")
         }
 
     # Returns an item from the item list
@@ -157,6 +160,19 @@ class Game(commands.Cog):
             if reaction.emoji == '✅':
                 self.player_list.pop(user.id)
                 print(f"A player has left the game:\n User: {user}\n Remaining Players: {self.player_list}\n")
+
+    def encounter(self, enc_type):
+        match enc_type:
+            case "open":
+                pass
+            case "empty":
+                pass
+            case "shop":
+                pass
+            case "traversal":
+                pass
+            case "boss":
+                pass
 
     # Returns enemies and items from the CogData.json file. 
     def load_game_data(self, data_file):

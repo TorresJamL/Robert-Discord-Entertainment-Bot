@@ -14,7 +14,8 @@ class Player:
                  defense: int = 1,
                  speed: int = 2,
                  weapon: Weapon = None, 
-                 armor: Armor = None
+                 armor: Armor = None,
+                 coords: list[int] = [0, 0, 0]
                  ) -> None:
         self.name = name
         self.description = description
@@ -26,6 +27,7 @@ class Player:
         self.armor = armor
         self.is_alive = True
         self.inventory = Inventory(size= 10)
+        self.coords = coords
         # TODO: Initialize values within constructor parameters.
 
     def is_player_alive(self):
@@ -70,3 +72,7 @@ class Player:
     def discard_item(self, item: Item):
         if self.inventory.has_item(item):
             self.inventory.remove_item(item)
+
+    def get_coords(self) -> tuple[int, int, int]:
+        """returns the coords of a player as a tuple. (x, y, z)"""
+        return tuple(self.coords)

@@ -63,11 +63,11 @@ class ModerationCog(commands.Cog):
         """
         try:
             timeout_duration = timedelta(minutes= duration_amount)
-            await member.timeout(until= discord.utils.utcnow() + timeout_duration, reason= timeout_reason)
+            await member.timeout(discord.utils.utcnow() + timeout_duration, reason= timeout_reason)
             await ctx.send(f"Member {member.name} was timed out for {duration_amount}")
 
-        except discord.Forbidden:
-            await ctx.send("I do not have permission to timeout this user.")
+        except discord.Forbidden as forbade:
+            await ctx.send(f"```I do not have permission to timeout this user. Program Output :: {forbade}```")
         except discord.HTTPException as e:
             await ctx.send(f"Failed to timeout the user. Error: {e}")
         except ValueError as error:

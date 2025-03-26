@@ -19,7 +19,7 @@ from discord.ext.commands.context import Context
 sys.path.insert(0, FILE_PATH)
 
 # Message to future me: 
-## Increment the amount of problems you've had with imports here: 7
+## Increment the amount of problems you've had with imports here: 8
 
 from BotGame import gameCog as GameCog
 
