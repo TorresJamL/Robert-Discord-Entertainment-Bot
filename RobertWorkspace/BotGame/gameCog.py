@@ -56,6 +56,7 @@ class Game(commands.Cog):
             "T" : self.encounter("traversal"),
             "B" : self.encounter("boss")
         }
+        self.game_in_progress = False
 
     # Returns an item from the item list
     def get_item(self, item_name: str)->(Item | None):
@@ -165,7 +166,7 @@ class Game(commands.Cog):
         match enc_type:
             case "open":
                 pass
-            case "empty":
+            case "enemy":
                 pass
             case "shop":
                 pass
@@ -173,6 +174,8 @@ class Game(commands.Cog):
                 pass
             case "boss":
                 pass
+            case _:
+                raise ValueError(f"Incorrect argument passed, '{enc_type}.' Only: open, enemy, shop, traversal and boss are viable arguments to pass.")
 
     # Returns enemies and items from the CogData.json file. 
     def load_game_data(self, data_file):
@@ -211,3 +214,6 @@ class Game(commands.Cog):
                     items.append(Armor(item['name'], item['defense'], item['durability']))
         # Returns both list
         return enemies, items
+    
+    async def game_loop(self):
+        return

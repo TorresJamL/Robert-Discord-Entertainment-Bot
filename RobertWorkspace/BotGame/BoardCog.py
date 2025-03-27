@@ -36,13 +36,12 @@ class Cell:
 
     def __str__(self):
         return self.__state
+    
 class Board:
-    def __init__(self, length: int, width: int, next = None, prev = None):
+    def __init__(self, length: int, width: int):
         self.__board = [[ Cell() for i in range(length)] for j in range(width)]
         self.length = length
         self.width = width
-        self.next = next
-        self.prev = prev
         #! Item space should be a shop encounter while open spaces have a random chance of dropping an item. As do enemies.
         
     def initialize_board(self):
@@ -69,3 +68,12 @@ class Board:
                 display_board += str(col) + " "
             display_board += '\n'
         return display_board
+
+class Map:
+    def __init__(self, length, width, height, difficult_ramp_up):
+        self.__boards = {}
+        self.length = length
+        self.width = width
+        self.height = height
+        for i in range(height):
+            self.boards[i] = Board(length, width)
