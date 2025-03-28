@@ -18,10 +18,8 @@ class TextToSpeech(commands.Cog):
 
     async def join_vc(self, ctx: Context) -> VoiceClient:
         """Joins the voice channel of the author of the message
-
         Args:
             ctx (_type_): _description_
-
         Returns:
             VoiceClient: _description_
         """
@@ -50,6 +48,10 @@ class TextToSpeech(commands.Cog):
         voices = engine.getProperty('voices')
         engine.setProperty('voice', voices[voice_gender].id)
         
+        '''
+            "Hello, World {r45, v0.5, g1} yabbagool"
+        '''
+
         engine.save_to_file(text, "RobertWorkspace\\tts_output.wav")
         engine.runAndWait()
     
@@ -70,19 +72,19 @@ class TextToSpeech(commands.Cog):
                 return
             else:
                 # Generate the audio
-                await self.text_to_speech(voice_rate, voice_volume, voice_gender, text)
+                await self.text_to_speech(voice_rate, voice_volume, voice_gender, self.TTS_queue[0])
+                self.TTS_queue = self.TTS_queue[1:]
                 # Get the bot's voice state and play the generated audio in the voice channel
                 voice_state = ctx.guild.voice_client
                 if voice_state:
                     with open("RobertWorkspace\\tts_output.wav", "rb") as file:
                         await ctx.send("Here's your audio file!", file=discord.File(file, "robert TTS.wav"))
-                    voice_state.play(discord.FFmpegPCMAudio("RobertWorkspace\\tts_output.wav"))
-                while voice_client.is_playing():
-                    await asyncio.sleep(1)
+                    await asyncio.wait_for(voice_state.play(discord.FFmpegPCMAudio("RobertWorkspace\\tts_output.wav")))
+                # while voice_client.is_playing():
+                #     await asyncio.sleep(0.0001)
 
                 print(f"Queue Length: {len(self.TTS_queue)} \nQueue: {self.TTS_queue}")
-                self.TTS_queue = self.TTS_queue[1:]
-                await self.speak(ctx, voice_client, self.TTS_queue[0], voice_rate, voice_volume, voice_gender)
+                await self.speak(ctx, voice_client, self.TTS_queue[1:], voice_rate, voice_volume, voice_gender)
             
         except Exception as error:
             print(f"(Speak) An error has occured: {error}")
@@ -103,7 +105,7 @@ class TextToSpeech(commands.Cog):
             print(f"voice client is a {type(voice_client)}")
             if not voice_client.is_playing():
                 self.is_playing = True
-                await self.speak(ctx, voice_client, text, rate, volume, gender)
+                await self.speak(ctx, voice_client, self.TTS_queue[0], rate, volume, gender)
         except Exception as error:
             print(f"(say) An error has occured: {error}")
 
@@ -114,7 +116,7 @@ class TextToSpeech(commands.Cog):
         print(f"Queue Length: {len(self.TTS_queue)} \nQueue: {self.TTS_queue}")
         try:
             voice_client = await self.join_vc(ctx)
-            await self.speak(ctx, voice_client, 200, 1.0, 0, text)
+            await self.speak(ctx, voice_client, text, 150, 1.0, 0)
         except Exception as error:
             print(f"(speak_base) An error has occured: {error}")
 

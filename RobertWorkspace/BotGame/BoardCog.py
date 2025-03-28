@@ -38,10 +38,18 @@ class Cell:
         return self.__state
     
 class Board:
-    def __init__(self, length: int, width: int):
-        self.__board = [[ Cell() for i in range(length)] for j in range(width)]
-        self.length = length
-        self.width = width
+    def __init__(self, length: int, width: int, weights:list[int] = None):
+        self.__board
+        self.length
+        self.width
+        if not weights:
+            self.__board = [[ Cell() for i in range(length)] for j in range(width)]
+            self.length = length
+            self.width = width
+        else:
+            self.__board = [[ Cell(weights=weights) for i in range(length)] for j in range(width)]
+            self.length = length
+            self.width = width
         #! Item space should be a shop encounter while open spaces have a random chance of dropping an item. As do enemies.
         
     def initialize_board(self):
@@ -70,10 +78,10 @@ class Board:
         return display_board
 
 class Map:
-    def __init__(self, length, width, height, difficult_ramp_up):
+    def __init__(self, length, width, height, difficultly_ramp_up):
         self.__boards = {}
         self.length = length
         self.width = width
         self.height = height
         for i in range(height):
-            self.boards[i] = Board(length, width)
+            self.__boards[i] = Board(length, width, weights= [70, 30, 10])

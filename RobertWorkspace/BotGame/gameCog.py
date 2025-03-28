@@ -216,4 +216,5 @@ class Game(commands.Cog):
         return enemies, items
     
     async def game_loop(self):
-        return
+        while (self.game_in_progress):
+            pass
